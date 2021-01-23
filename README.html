@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css">
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css">
+
+</head>
+<body class="markdown-body">
+<h2 id="learning-linux-ctl-1" data-line="0" class="code-line">Learning Linux CTL</h2>
+<h3 id="e4b880e69687e4bbb6e7b3bbe7bb9fe6a091-1" data-line="1" class="code-line">一、文件系统树</h3>
+<p data-line="2" class="code-line">1、一个类Unix的操作系统以<strong>分层目录结构</strong>来组织所有文件，组成了一棵树形目录。
+类Unix的操作系统只有一个单一的文件系统树，不管有多少个磁盘或者存储设备连接到计算机上。
+根据负责维护系统安全的系统管理员的兴致，存储设备<strong>挂载</strong>到（mount）目录树的各个节点上。</p>
+<p data-line="6" class="code-line">2、Linux没有“文件扩展名”的概念，可以用任何名字来给文件起名。文件内容或用途由其它方法来决定。</p>
+<p data-line="8" class="code-line">3、相关命令：<code>pwd</code>，<code>cd</code>，<code>ls</code>，<code>file</code>（确定文件类型），<code>less</code>（浏览文件内容）。</p>
+<p data-line="10" class="code-line">4、<code>ls</code>命令记不住的选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>长选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-d</code></td>
+<td><code>--directory</code></td>
+<td>通常，如果指定了目录名，ls 命令会列出这个目录中的内容，而不是目录本身。 把这个选项与 -l 选项结合使用，可以看到所指定目录的详细信息，而不是目录中的内容。</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td><code>--human-readable</code></td>
+<td>当以长格式列出时，以人们可读的格式，而不是以字节数来显示文件的大小。</td>
+</tr>
+<tr>
+<td><code>-S</code></td>
+<td></td>
+<td>命令输出结果按照文件大小来排序。</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td></td>
+<td>按照修改时间来排序。</td>
+</tr>
+</tbody>
+</table>
+<p data-line="18" class="code-line">5、<code>ls -a</code>的输出格式中，第二个表示文件硬链接的个数。</p>
+<pre><code data-line="19" class="code-line"><code><div>-rw-r--r--@  1 hliangzhao  staff   1.6K Jan 17 10:20 .bash_profile
+</div></code></code></pre>
+
+</body></html>
