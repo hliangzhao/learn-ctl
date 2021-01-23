@@ -10,8 +10,8 @@
 
 </head>
 <body class="markdown-body">
-<h2 id="learning-linux-command-line-1" data-line="0" class="code-line">Learning Linux Command Line</h2>
-<h3 id="e4b880e8a681e782b9-1" data-line="1" class="code-line">一、要点</h3>
+<h2 id="learning-linux-command-line-5" data-line="0" class="code-line">Learning Linux Command Line</h2>
+<h3 id="e4b880e8a681e782b9-5" data-line="1" class="code-line">一、要点</h3>
 <p data-line="2" class="code-line">1、一个类Unix的操作系统以<strong>分层目录结构</strong>来组织所有文件，组成了一棵树形目录。
 类Unix的操作系统只有一个单一的文件系统树，不管有多少个磁盘或者存储设备连接到计算机上。
 根据负责维护系统安全的系统管理员的兴致，存储设备<strong>挂载</strong>到（mount）目录树的各个节点上。</p>
@@ -22,29 +22,24 @@
 <thead>
 <tr>
 <th>选项</th>
-<th>长选项</th>
 <th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><div style="width: 25pt"><code>-d</code></div></td>
-<td><div style="width: 110pt"><code>--directory</code></div></td>
+<td><code>-d, --directory</code></td>
 <td>通常，如果指定了目录名，ls 命令会列出这个目录中的内容，而不是目录本身。 把这个选项与 -l 选项结合使用，可以看到所指定目录的详细信息，而不是目录中的内容。</td>
 </tr>
 <tr>
-<td><code>-h</code></td>
-<td><code>--human-readable</code></td>
+<td><code>-h, --human-readable</code></td>
 <td>当以长格式列出时，以人们可读的格式，而不是以字节数来显示文件的大小。</td>
 </tr>
 <tr>
 <td><code>-S</code></td>
-<td></td>
 <td>命令输出结果按照文件大小来排序。</td>
 </tr>
 <tr>
 <td><code>-t</code></td>
-<td></td>
 <td>按照修改时间来排序。</td>
 </tr>
 </tbody>
@@ -269,7 +264,7 @@
 </thead>
 <tbody>
 <tr>
-<td><div style="width: 110pt"><code>-a, --archive</code></div></td>
+<td><code>-a, --archive</code></td>
 <td>复制文件和目录，<strong>以及它们的属性</strong>，包括拥有者和所有权。 通常，副本具有用户所操作文件的默认属性。</td>
 </tr>
 <tr>
@@ -306,7 +301,7 @@
 <li data-line="111" class="code-line">是一个 shell 函数。</li>
 <li data-line="112" class="code-line">是一个命令别名。我们可以定义自己的命令，建立在其它命令之上。</li>
 </ul>
-<p data-line="114" class="code-line">常用命令：</p>
+<p data-line="114" class="code-line">用以下命令查阅和理解命令：</p>
 <ul>
 <li data-line="115" class="code-line"><code>type</code> – 说明怎样解释一个命令名</li>
 <li data-line="116" class="code-line"><code>which</code> – 显示会执行哪个可执行程序（只对可执行程序有效，不包括内建命令和命令别名）</li>
@@ -314,10 +309,10 @@
 <li data-line="118" class="code-line"><code>apropos</code> – 显示一系列适合的命令</li>
 <li data-line="119" class="code-line"><code>info</code> – 显示命令</li>
 <li data-line="120" class="code-line"><code>whatis</code> – 显示一个命令的简洁描述</li>
-<li data-line="121" class="code-line"><code>alias</code> – 创建命令别名（e.g.，alias foo='cd /usr; ls; cd -'，unalias foo），仅在shell会话内有效。</li>
+<li data-line="121" class="code-line"><code>alias</code> – 创建命令别名（e.g.，<code>alias foo='cd /usr; ls; cd -'，unalias foo</code>），仅在shell会话内有效。</li>
 </ul>
 <p data-line="123" class="code-line">11、<strong>重定向</strong></p>
-<p data-line="125" class="code-line">（1）常用命令</p>
+<p data-line="125" class="code-line">（1）<strong>常用命令</strong></p>
 <ul>
 <li data-line="126" class="code-line"><code>cat</code> － 连接/显示文件</li>
 <li data-line="127" class="code-line"><code>sort</code> － 排序文本行</li>
@@ -329,24 +324,24 @@
 <li data-line="133" class="code-line"><code>tee</code> - 从标准输入读取数据，并同时写到标准输出和文件</li>
 </ul>
 <p data-line="135" class="code-line">（2）与Unix主题“任何东西都是一个文件”保持一致，像<code>ls</code>这样的程序实际上把他们的运行结果输送到一个叫做<strong>标准输出</strong>的特殊文件（<code>stdout</code>），而它们的状态信息则送到另一个叫做<strong>标准错误</strong>的文件（<code>stderr</code>）。默认情况下，标准输出和标准错误都连接到屏幕。除此之外，许多程序从一个叫做标准输入（<code>stdin</code>）的设备得到输入，默认情况下，标准输入连接到键盘。I/O 重定向允许我们更改输出地点和输入来源。一般来说，输入来自键盘，输出送到屏幕，但是通过I/O重定向，我们可以做出改变。</p>
-<p data-line="137" class="code-line">（3）标准输出重定向：使用“&gt;”<em>重定向符后接文件名</em>将标准输出重定向到屏幕以外的一个文件（没错！屏幕也可以视为一个文件）。当我们使用“&gt;”重定向符来重定向输出结果时，目标文件总是从开头被重写。如果命令没有产生运行结果，只有错误信息，重定向操作开始重写文件，然后由于错误而停止，导致文件内容清空。使用”&gt;&gt;“重定向符将命令的输出追加到重定向文件。</p>
+<p data-line="137" class="code-line">（3）**标准输出重定向：**使用“&gt;”<em>重定向符后接文件名</em>将标准输出重定向到屏幕以外的一个文件（没错！屏幕也可以视为一个文件）。当我们使用“&gt;”重定向符来重定向输出结果时，目标文件总是从开头被重写。如果命令没有产生运行结果，只有错误信息，重定向操作开始重写文件，然后由于错误而停止，导致文件内容清空。使用”&gt;&gt;“重定向符将命令的输出追加到重定向文件。</p>
 <ul>
 <li data-line="138" class="code-line"><code>ls -l /usr/bin &gt; ls-output.txt</code>（重写）</li>
 <li data-line="139" class="code-line"><code>ls -l /usr/bin &gt;&gt; ls-output.txt</code>（追加）</li>
 </ul>
-<p data-line="141" class="code-line">（4）标准错误重定向：文件流的前三个称作标准输入、输出和错误，shell内部分别将其称为文件描述符0、1和2。</p>
+<p data-line="141" class="code-line">（4）**标准错误重定向：**文件流的前三个称作标准输入、输出和错误，shell内部分别将其称为文件描述符0、1和2。</p>
 <ul>
 <li data-line="142" class="code-line"><code>ls -l /bin/usr 2&gt; ls-error.txt</code>（如果命令有错误，则写入文件，否则文件为空）</li>
 </ul>
-<p data-line="144" class="code-line">（5）重定向标准输出和错误到同一个文件：</p>
+<p data-line="144" class="code-line">（5）<strong>重定向标准输出和错误到同一个文件：</strong></p>
 <ul>
 <li data-line="145" class="code-line"><code>ls -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</code>（首先重定向标准输出到文件ls-output.txt，然后重定向文件描述符2（标准错误）到文件描述符1（标准输出）使用表示法<code>2&gt;&amp;1</code>。如果没出错，则标准错误为空，因此<code>ls-output.txt</code>不会被追加任何信息；如果出错了，则一开始<code>ls-output.txt</code>为空，但是标准错误不为空，并且内容又被写入到<code>ls-output.txt</code>。因此，这条命令可以做到重定向标准输出和错误到同一个文件）</li>
 </ul>
-<p data-line="147" class="code-line">（6）处理不必要的输出：</p>
+<p data-line="147" class="code-line">（6）<strong>处理不必要的输出：</strong></p>
 <ul>
 <li data-line="148" class="code-line"><code>ls -l /bin/usr 2&gt; /dev/null</code>（这个文件是系统设备，叫做位存储桶，它可以 接受输入，并且对输入不做任何处理）</li>
 </ul>
-<p data-line="150" class="code-line">（7）标准输入重定向：
+<p data-line="150" class="code-line">（7）<strong>标准输入重定向：</strong>
 <code>cat filename</code>会显示文件的内容，经常被用来显示简短的文本文件。因为<code>cat</code>可以接受不只一个文件作为参数，所以它也可以用来<strong>把文件连接在一起</strong>。比方说我们下载了一个大型文件，这个文件被分离成多个部分（USENET中的多媒体文件经常以这种方式分离），我们想把它们连起来。如果文件命名为：movie.mpeg.001 movie.mpeg.002 … movie.mpeg.099...，则可以通过</p>
 <pre><code data-line="152" class="code-line language-shell"><div>cat movie.mpeg.0* &gt; movie.mpeg
 </div></code></pre>
