@@ -10,13 +10,13 @@
 
 </head>
 <body class="markdown-body">
-<h2 id="learning-linux-ctl-1" data-line="0" class="code-line">Learning Linux CTL</h2>
-<h3 id="e4b880e69687e4bbb6e7b3bbe7bb9fe6a091-1" data-line="1" class="code-line">一、文件系统树</h3>
+<h2 id="learning-linux-command-line-1" data-line="0" class="code-line">Learning Linux Command Line</h2>
+<h3 id="e4b880e8a681e782b9-1" data-line="1" class="code-line">一、要点</h3>
 <p data-line="2" class="code-line">1、一个类Unix的操作系统以<strong>分层目录结构</strong>来组织所有文件，组成了一棵树形目录。
 类Unix的操作系统只有一个单一的文件系统树，不管有多少个磁盘或者存储设备连接到计算机上。
 根据负责维护系统安全的系统管理员的兴致，存储设备<strong>挂载</strong>到（mount）目录树的各个节点上。</p>
 <p data-line="6" class="code-line">2、Linux没有“文件扩展名”的概念，可以用任何名字来给文件起名。文件内容或用途由其它方法来决定。</p>
-<p data-line="8" class="code-line">3、相关命令：<code>pwd</code>，<code>cd</code>，<code>ls</code>，<code>file</code>（确定文件类型），<code>less</code>（浏览文件内容）。</p>
+<p data-line="8" class="code-line">3、相关命令：<code>pwd</code>，<code>cd</code>，<code>ls</code>，<code>file</code>（确定文件类型），<code>less</code>（浏览文件内容）、<code>rm</code>、<code>cp</code>、<code>mv</code>、<code>mkdir</code>、<code>ln</code>（创建硬链接和符号链接）。</p>
 <p data-line="10" class="code-line">4、<code>ls</code>命令记不住的选项：</p>
 <table>
 <thead>
@@ -28,8 +28,8 @@
 </thead>
 <tbody>
 <tr>
-<td><code>-d</code></td>
-<td><code>--directory</code></td>
+<td><div style="width: 25pt"><code>-d</code></div></td>
+<td><div style="width: 110pt"><code>--directory</code></div></td>
 <td>通常，如果指定了目录名，ls 命令会列出这个目录中的内容，而不是目录本身。 把这个选项与 -l 选项结合使用，可以看到所指定目录的详细信息，而不是目录中的内容。</td>
 </tr>
 <tr>
@@ -52,5 +52,308 @@
 <p data-line="18" class="code-line">5、<code>ls -a</code>的输出格式中，第二个表示文件硬链接的个数。</p>
 <pre><code data-line="19" class="code-line"><code><div>-rw-r--r--@  1 hliangzhao  staff   1.6K Jan 17 10:20 .bash_profile
 </div></code></code></pre>
+<p data-line="23" class="code-line">6、什么是<strong>文本</strong>（text）？
+在计算机中，信息的表达与记录是通过映射到数字来实现的。<strong>文本</strong>是简单的字符与数字之间的一对一映射。五十个字符的文本翻译成五十个字节的数据。纯ASCII文件只包含字符本身和一些基本的控制符（如制表符、回车符及换行符等）。相反，如<code>.docx</code>这样的文字处理器文档包含许多非文本元素，来描述它的结构和格式。</p>
+<p data-line="26" class="code-line">在Linux系统中，大多数系统配置文件和脚本文件都是文本文件。</p>
+<p data-line="28" class="code-line">7、Linux系统目录</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/bin</code></td>
+<td>包含系统启动和运行所必须的二进制程序。</td>
+</tr>
+<tr>
+<td><code>/boot</code></td>
+<td>包含 Linux 内核、初始 RAM 磁盘映像（用于启动时所需的驱动）和 启动加载程序。</td>
+</tr>
+<tr>
+<td><code>/dev</code></td>
+<td>这是一个包含设备结点的特殊目录。“一切都是文件”，也适用于设备。 在这个目录里，内核维护着所有设备的列表。</td>
+</tr>
+<tr>
+<td><code>/etc</code></td>
+<td>这个目录包含所有系统层面的配置文件。它也包含一系列的 shell 脚本， 在系统启动时，这些脚本会开启每个系统服务。这个目录中的任何文件应该是可读的文本文件。<br> <ui><li><code>/etc/crontab</code>：定义自动运行的任务。</li><li><code>/etc/fstab</code>：包含存储设备的列表，以及与他们相关的挂载点。</li><li><code>/etc/passwd</code>：包含用户帐号列表。</li></ui></td>
+</tr>
+<tr>
+<td><code>/home</code></td>
+<td>在通常的配置环境下，系统会在/home`下，给每个用户分配一个目录。普通用户只能在自己的目录下<strong>写</strong>文件。这个限制保护系统免受错误的用户活动破坏。</td>
+</tr>
+<tr>
+<td><code>/lib</code></td>
+<td>包含核心系统程序所使用的共享库文件。这些文件与 Windows 中的动态链接库相似。</td>
+</tr>
+<tr>
+<td><code>/media</code></td>
+<td>（现代Linux）包含<strong>可移动介质</strong>的挂载点， 例如USB驱动器，CD-ROMs等等。这些介质连接到计算机之后，会自动地挂载到这个目录结点下。</td>
+</tr>
+<tr>
+<td><code>/mnt</code></td>
+<td>（早期Linux）包含可移动介质的挂载点。</td>
+</tr>
+<tr>
+<td><code>/opt</code></td>
+<td>被用来安装“可选的”软件。这个主要用来存储可能 安装在系统中的商业软件产品。</td>
+</tr>
+<tr>
+<td><code>/proc</code></td>
+<td>从存储在硬盘上的文件的意义上说，它不是真正的文件系统。相反，它是一个由Linux内核维护的虚拟文件系统。它所包含的文件是内核的窥视孔。这些文件是可读的，它们会告诉你内核是怎样监管计算机的。</td>
+</tr>
+<tr>
+<td><code>/root</code></td>
+<td>root账户的home directory。</td>
+</tr>
+<tr>
+<td><code>/tmp</code></td>
+<td>用来存储由各种程序创建的临时文件的地方。一些配置导致系统每次重新启动时，都会清空这个目录。</td>
+</tr>
+<tr>
+<td><code>/usr</code></td>
+<td>包含普通用户所需要的所有程序和文件（User System Resource）。</td>
+</tr>
+<tr>
+<td><code>/usr/bin</code></td>
+<td>包含系统安装的可执行程序。通常，这个目录会包含许多程序。</td>
+</tr>
+<tr>
+<td><code>/usr/lib</code></td>
+<td>包含由/usr/bin 目录中的程序所用的共享库。</td>
+</tr>
+<tr>
+<td><code>/usr/local</code></td>
+<td>这是非系统发行版自带程序的安装目录。 通常，由源码编译的程序会安装在<code>/usr/local/bin</code>目录下。新安装的Linux系统中会存在这个目录， 并且在管理员安装程序之前，这个目录是空的。</td>
+</tr>
+<tr>
+<td><code>/usr/sbin</code></td>
+<td>包含许多系统管理程序（system binary）。</td>
+</tr>
+<tr>
+<td><code>/usr/share</code></td>
+<td>包含许多由<code>/usr/bin</code>目录中的程序使用的共享数据。其中包括像默认的配置文件、图标、桌面背景、音频文件等等。</td>
+</tr>
+<tr>
+<td><code>/usr/share/doc</code></td>
+<td>大多数安装在系统中的软件包会包含一些文档。在该目录我们可以找到按照软件包分类的文档。</td>
+</tr>
+<tr>
+<td><code>/var</code></td>
+<td>除了<code>/tmp</code>和<code>/home</code>目录之外，相对来说，目前我们看到的目录是静态的，这是说，它们的内容不会改变。<code>/var</code>目录存放的是动态文件。各种数据库、假脱机文件、用户邮件等等，都位于在这里。</td>
+</tr>
+<tr>
+<td><code>/var/log</code></td>
+<td>包含日志文件、各种系统活动的记录。这些文件非常重要，并且应该时时监测它们。其中最重要的一个文件是<code>/var/log/messages</code>。注意，为了系统安全，在一些系统中，你必须是超级用户才能查看这些日志文件。</td>
+</tr>
+</tbody>
+</table>
+<p data-line="54" class="code-line">8、通配符：这是shell提供的特殊字符，用来帮助我们快速指定一组文件名。接受文件名作为参数的任何命令，都可以使用通配符。</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>匹配任意多个字符（包括零个或一个）</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配任意一个字符（不包括零个）</td>
+</tr>
+<tr>
+<td><code>[characters]</code></td>
+<td>匹配任意一个属于<strong>字符集</strong>中的字符</td>
+</tr>
+<tr>
+<td><code>[!characters]</code></td>
+<td>匹配任意一个不是字符集中的字符</td>
+</tr>
+<tr>
+<td><code>[[:class:]]</code></td>
+<td>匹配任意一个属于<strong>指定字符类</strong>中的字符</td>
+</tr>
+</tbody>
+</table>
+<p data-line="64" class="code-line">常用的字符类有：</p>
+<table>
+<thead>
+<tr>
+<th>字符类</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[:alnum:]</code></td>
+<td>匹配任意一个字母或数字</td>
+</tr>
+<tr>
+<td><code>[:alpha:]</code></td>
+<td>匹配任意一个字母</td>
+</tr>
+<tr>
+<td><code>[:digit:]</code></td>
+<td>匹配任意一个数字</td>
+</tr>
+<tr>
+<td><code>[:lower:]</code></td>
+<td>匹配任意一个小写字母</td>
+</tr>
+<tr>
+<td><code>[:upper:]</code></td>
+<td>匹配任意一个大写字母</td>
+</tr>
+</tbody>
+</table>
+<p data-line="73" class="code-line">通配符的案例：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>所有文件</td>
+</tr>
+<tr>
+<td><code>g*</code></td>
+<td>文件名以“g”开头的文件</td>
+</tr>
+<tr>
+<td><code>b*.txt</code></td>
+<td>以&quot;b&quot;开头，中间有零个或任意多个字符，并以&quot;.txt&quot;结尾的文件</td>
+</tr>
+<tr>
+<td><code>Data???</code></td>
+<td>以“Data”开头，其后紧接着3个字符的文件</td>
+</tr>
+<tr>
+<td><code>[abc]*</code></td>
+<td>文件名以&quot;a&quot;,&quot;b&quot;,或&quot;c&quot;开头的文件</td>
+</tr>
+<tr>
+<td><code>BACKUP.[0-9][0-9][0-9]</code></td>
+<td>以&quot;BACKUP.&quot;开头，并紧接着3个数字的文件</td>
+</tr>
+<tr>
+<td><code>[[:upper:]]*</code></td>
+<td>以大写字母开头的文件</td>
+</tr>
+<tr>
+<td><code>[![:digit:]]*</code></td>
+<td>不以数字开头的文件</td>
+</tr>
+<tr>
+<td><code>*[[:lower:]123]</code></td>
+<td>文件名以小写字母结尾，或以 “1”，“2”，或 “3” 结尾的文件</td>
+</tr>
+</tbody>
+</table>
+<p data-line="86" class="code-line">9、<code>cp</code>的参数：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><div style="width: 110pt"><code>-a, --archive</code></div></td>
+<td>复制文件和目录，<strong>以及它们的属性</strong>，包括拥有者和所有权。 通常，副本具有用户所操作文件的默认属性。</td>
+</tr>
+<tr>
+<td><code>-i, --interactive</code></td>
+<td>在重写已存在文件之前，提示用户确认。如果这个选项不指定， <code>cp</code>命令会默认重写文件。</td>
+</tr>
+<tr>
+<td><code>-r, --recursive</code></td>
+<td>递归地复制目录及目录中的内容。当复制目录时，需要这个选项（或者<code>-a</code>选项）。</td>
+</tr>
+<tr>
+<td><code>-u, --update</code></td>
+<td>当把文件从一个目录复制到另一个目录时，仅复制目标目录中不存在的文件，或者是文件内容新于目标目录中已经存在的文件。</td>
+</tr>
+<tr>
+<td><code>-v, --verbose</code></td>
+<td>显示翔实的命令操作信息</td>
+</tr>
+</tbody>
+</table>
+<p data-line="95" class="code-line"><code>cp</code>、<code>mv</code>、<code>rm</code>、<code>mkdir</code>等均可用<code>-v</code>参数来输出帮助命令。用<code>man/info command</code>来查阅更为全面详细的命令参数信息。</p>
+<p data-line="97" class="code-line">10、硬链接与符号链接：</p>
+<p data-line="99" class="code-line"><strong>硬链接</strong>是最初Unix创建链接的方式。每个文件默认会有一个硬链接，这个硬链接给予文件名字。我们每创建一个硬链接，就为一个文件创建了一个额外的目录项。硬链接有两个重要局限性：</p>
+<ul>
+<li data-line="100" class="code-line">一个硬链接不能关联它所在文件系统之外的文件（不能关联与链接本身不在同一个磁盘分区上的文件）。</li>
+<li data-line="101" class="code-line">一个硬链接不能关联一个目录。</li>
+</ul>
+<p data-line="103" class="code-line"><strong>符号链接</strong>生效，是通过创建一个 特殊类型的文件，这个文件包含一个关联文件或目录的文本指针（类似“快捷方式”）。对于符号链接，有一点值得记住，执行的大多数文件操作是针对链接的对象，而不是链接本身。 而<code>rm</code>命令是个特例。当你删除链接的时候，删除链接本身，而不是链接的对象。</p>
+<p data-line="105" class="code-line"><code>ls -i</code>可显示文件索引节点号（index），索引节点相同则表示是同一个文件。</p>
+<p data-line="107" class="code-line">10、什么是命令？</p>
+<ul>
+<li data-line="109" class="code-line">是一个可执行程序，就像我们所看到的位于目录/usr/bin 中的文件一样。 这一类程序可以是用诸如 C 和 C++语言写成的程序编译的二进制文件, 也可以是由诸如shell，perl，python，ruby等等脚本语言写成的程序 。</li>
+<li data-line="110" class="code-line">是一个内建于shell自身的命令。bash支持若干命令，内部叫做shell内部命令 (builtins)。例如，<code>cd</code>、<code>mv</code>等。</li>
+<li data-line="111" class="code-line">是一个 shell 函数。</li>
+<li data-line="112" class="code-line">是一个命令别名。我们可以定义自己的命令，建立在其它命令之上。</li>
+</ul>
+<p data-line="114" class="code-line">常用命令：</p>
+<ul>
+<li data-line="115" class="code-line"><code>type</code> – 说明怎样解释一个命令名</li>
+<li data-line="116" class="code-line"><code>which</code> – 显示会执行哪个可执行程序（只对可执行程序有效，不包括内建命令和命令别名）</li>
+<li data-line="117" class="code-line"><code>man</code> – 显示命令手册页</li>
+<li data-line="118" class="code-line"><code>apropos</code> – 显示一系列适合的命令</li>
+<li data-line="119" class="code-line"><code>info</code> – 显示命令</li>
+<li data-line="120" class="code-line"><code>whatis</code> – 显示一个命令的简洁描述</li>
+<li data-line="121" class="code-line"><code>alias</code> – 创建命令别名（e.g.，alias foo='cd /usr; ls; cd -'，unalias foo），仅在shell会话内有效。</li>
+</ul>
+<p data-line="123" class="code-line">11、<strong>重定向</strong></p>
+<p data-line="125" class="code-line">（1）常用命令</p>
+<ul>
+<li data-line="126" class="code-line"><code>cat</code> － 连接/显示文件</li>
+<li data-line="127" class="code-line"><code>sort</code> － 排序文本行</li>
+<li data-line="128" class="code-line"><code>uniq</code> － 报道或省略重复行</li>
+<li data-line="129" class="code-line"><code>grep</code> － 打印匹配行</li>
+<li data-line="130" class="code-line"><code>wc</code> － 打印文件中换行符，字，和字节个数</li>
+<li data-line="131" class="code-line"><code>head</code> － 输出文件第一部分</li>
+<li data-line="132" class="code-line"><code>tail</code> - 输出文件最后一部分</li>
+<li data-line="133" class="code-line"><code>tee</code> - 从标准输入读取数据，并同时写到标准输出和文件</li>
+</ul>
+<p data-line="135" class="code-line">（2）与Unix主题“任何东西都是一个文件”保持一致，像<code>ls</code>这样的程序实际上把他们的运行结果输送到一个叫做<strong>标准输出</strong>的特殊文件（<code>stdout</code>），而它们的状态信息则送到另一个叫做<strong>标准错误</strong>的文件（<code>stderr</code>）。默认情况下，标准输出和标准错误都连接到屏幕。除此之外，许多程序从一个叫做标准输入（<code>stdin</code>）的设备得到输入，默认情况下，标准输入连接到键盘。I/O 重定向允许我们更改输出地点和输入来源。一般来说，输入来自键盘，输出送到屏幕，但是通过I/O重定向，我们可以做出改变。</p>
+<p data-line="137" class="code-line">（3）标准输出重定向：使用“&gt;”<em>重定向符后接文件名</em>将标准输出重定向到屏幕以外的一个文件（没错！屏幕也可以视为一个文件）。当我们使用“&gt;”重定向符来重定向输出结果时，目标文件总是从开头被重写。如果命令没有产生运行结果，只有错误信息，重定向操作开始重写文件，然后由于错误而停止，导致文件内容清空。使用”&gt;&gt;“重定向符将命令的输出追加到重定向文件。</p>
+<ul>
+<li data-line="138" class="code-line"><code>ls -l /usr/bin &gt; ls-output.txt</code>（重写）</li>
+<li data-line="139" class="code-line"><code>ls -l /usr/bin &gt;&gt; ls-output.txt</code>（追加）</li>
+</ul>
+<p data-line="141" class="code-line">（4）标准错误重定向：文件流的前三个称作标准输入、输出和错误，shell内部分别将其称为文件描述符0、1和2。</p>
+<ul>
+<li data-line="142" class="code-line"><code>ls -l /bin/usr 2&gt; ls-error.txt</code>（如果命令有错误，则写入文件，否则文件为空）</li>
+</ul>
+<p data-line="144" class="code-line">（5）重定向标准输出和错误到同一个文件：</p>
+<ul>
+<li data-line="145" class="code-line"><code>ls -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</code>（首先重定向标准输出到文件ls-output.txt，然后重定向文件描述符2（标准错误）到文件描述符1（标准输出）使用表示法<code>2&gt;&amp;1</code>。如果没出错，则标准错误为空，因此<code>ls-output.txt</code>不会被追加任何信息；如果出错了，则一开始<code>ls-output.txt</code>为空，但是标准错误不为空，并且内容又被写入到<code>ls-output.txt</code>。因此，这条命令可以做到重定向标准输出和错误到同一个文件）</li>
+</ul>
+<p data-line="147" class="code-line">（6）处理不必要的输出：</p>
+<ul>
+<li data-line="148" class="code-line"><code>ls -l /bin/usr 2&gt; /dev/null</code>（这个文件是系统设备，叫做位存储桶，它可以 接受输入，并且对输入不做任何处理）</li>
+</ul>
+<p data-line="150" class="code-line">（7）标准输入重定向：
+<code>cat filename</code>会显示文件的内容，经常被用来显示简短的文本文件。因为<code>cat</code>可以接受不只一个文件作为参数，所以它也可以用来<strong>把文件连接在一起</strong>。比方说我们下载了一个大型文件，这个文件被分离成多个部分（USENET中的多媒体文件经常以这种方式分离），我们想把它们连起来。如果文件命名为：movie.mpeg.001 movie.mpeg.002 … movie.mpeg.099...，则可以通过</p>
+<pre><code data-line="152" class="code-line language-shell"><div>cat movie.mpeg.0* &gt; movie.mpeg
+</div></code></pre>
+<p data-line="155" class="code-line">将它们的内容依次连接起来并写入文件movie.mpeg。</p>
+<p data-line="157" class="code-line">当<code>cat</code>没有给出任何参数时，它会从标准输入读入数据，又因为标准输入默认情况下连接到键盘，因此它正在等待我们输入数据。每当输入回车换行符时，cat 复制标准输入到标准输出，因此我们看到文本行重复出现。（使用<code>Ctrl-d</code>告诉标准输入它已经到达文件末尾EOF）。</p>
+<p data-line="159" class="code-line">可以用<code>cat &gt; filename</code>将标准输入写入“标准输出所重定向的文件”filename中。同样地，可以用<code>cat &lt; filename</code>
+“从标准输入所重定向的文件”中读取内容到标准输出（和<code>cat filename</code>一致）。</p>
+<p data-line="162" class="code-line">（8）管道线：<code>cmd1</code>的标准输出可以通过管道送至<code>cmd2</code>的标准输入——<code>cmd1 | cmd2</code>。</p>
 
 </body></html>
