@@ -10,14 +10,15 @@
 
 </head>
 <body class="markdown-body">
-<h2 id="learning-linux-command-line-5" data-line="0" class="code-line">Learning Linux Command Line</h2>
-<h3 id="e4b880e8a681e782b9-5" data-line="1" class="code-line">一、要点</h3>
-<p data-line="2" class="code-line">1、一个类Unix的操作系统以<strong>分层目录结构</strong>来组织所有文件，组成了一棵树形目录。
+<h2 id="e7b1bbunixe7b3bbe7bb9fe591bde4bba4e8a18ce9809fe69fa5e6b885e58d95-4" data-line="0" class="code-line">类Unix系统命令行速查清单</h2>
+<p data-line="1" class="code-line">（本文档所述内容的测试环境为macOS 10.14 &amp; zsh 5.7）</p>
+<h3 id="e4b880e5ada6e4b9a0shell-4" data-line="2" class="code-line">一、学习shell</h3>
+<p data-line="3" class="code-line">1、一个类Unix的操作系统以<strong>分层目录结构</strong>来组织所有文件，组成了一棵树形目录。
 类Unix的操作系统只有一个单一的文件系统树，不管有多少个磁盘或者存储设备连接到计算机上。
 根据负责维护系统安全的系统管理员的兴致，存储设备<strong>挂载</strong>到（mount）目录树的各个节点上。</p>
-<p data-line="6" class="code-line">2、Linux没有“文件扩展名”的概念，可以用任何名字来给文件起名。文件内容或用途由其它方法来决定。</p>
-<p data-line="8" class="code-line">3、相关命令：<code>pwd</code>，<code>cd</code>，<code>ls</code>，<code>file</code>（确定文件类型），<code>less</code>（浏览文件内容）、<code>rm</code>、<code>cp</code>、<code>mv</code>、<code>mkdir</code>、<code>ln</code>（创建硬链接和符号链接）。</p>
-<p data-line="10" class="code-line">4、<code>ls</code>命令记不住的选项：</p>
+<p data-line="7" class="code-line">2、Linux没有“文件扩展名”的概念，可以用任何名字来给文件起名。文件内容或用途由其它方法来决定。</p>
+<p data-line="9" class="code-line">3、相关命令：<code>pwd</code>，<code>cd</code>，<code>ls</code>，<code>file</code>（确定文件类型），<code>less</code>（浏览文件内容）、<code>rm</code>、<code>cp</code>、<code>mv</code>、<code>mkdir</code>、<code>ln</code>（创建硬链接和符号链接）。</p>
+<p data-line="11" class="code-line">4、<code>ls</code>命令记不住的选项：</p>
 <table>
 <thead>
 <tr>
@@ -28,7 +29,7 @@
 <tbody>
 <tr>
 <td><code>-d, --directory</code></td>
-<td>通常，如果指定了目录名，ls 命令会列出这个目录中的内容，而不是目录本身。 把这个选项与 -l 选项结合使用，可以看到所指定目录的详细信息，而不是目录中的内容。</td>
+<td>通常，如果指定了目录名，<code>ls</code>命令会列出这个目录中的内容，而不是目录本身。 把这个选项与<code>-l</code>选项结合使用，可以看到所指定目录的详细信息，而不是目录中的内容。</td>
 </tr>
 <tr>
 <td><code>-h, --human-readable</code></td>
@@ -44,13 +45,14 @@
 </tr>
 </tbody>
 </table>
-<p data-line="18" class="code-line">5、<code>ls -a</code>的输出格式中，第二个表示文件硬链接的个数。</p>
-<pre><code data-line="19" class="code-line"><code><div>-rw-r--r--@  1 hliangzhao  staff   1.6K Jan 17 10:20 .bash_profile
+<br>
+<p data-line="20" class="code-line">5、<code>ls -a</code>的输出格式中，第二个表示文件硬链接的个数。</p>
+<pre><code data-line="21" class="code-line"><code><div>-rw-r--r--@  1 hliangzhao  staff   1.6K Jan 17 10:20 .bash_profile
 </div></code></code></pre>
-<p data-line="23" class="code-line">6、什么是<strong>文本</strong>（text）？
+<p data-line="25" class="code-line">6、什么是<strong>文本</strong>（text）？
 在计算机中，信息的表达与记录是通过映射到数字来实现的。<strong>文本</strong>是简单的字符与数字之间的一对一映射。五十个字符的文本翻译成五十个字节的数据。纯ASCII文件只包含字符本身和一些基本的控制符（如制表符、回车符及换行符等）。相反，如<code>.docx</code>这样的文字处理器文档包含许多非文本元素，来描述它的结构和格式。</p>
-<p data-line="26" class="code-line">在Linux系统中，大多数系统配置文件和脚本文件都是文本文件。</p>
-<p data-line="28" class="code-line">7、Linux系统目录</p>
+<p data-line="28" class="code-line">在Linux系统中，大多数系统配置文件和脚本文件都是文本文件。</p>
+<p data-line="30" class="code-line">7、Linux系统目录</p>
 <table>
 <thead>
 <tr>
@@ -145,7 +147,8 @@
 </tr>
 </tbody>
 </table>
-<p data-line="54" class="code-line">8、通配符：这是shell提供的特殊字符，用来帮助我们快速指定一组文件名。接受文件名作为参数的任何命令，都可以使用通配符。</p>
+<br>
+<p data-line="57" class="code-line">8、通配符：这是shell提供的特殊字符，用来帮助我们快速指定一组文件名。<strong>接受文件名作为参数的任何命令，都可以使用通配符。</strong></p>
 <table>
 <thead>
 <tr>
@@ -176,7 +179,7 @@
 </tr>
 </tbody>
 </table>
-<p data-line="64" class="code-line">常用的字符类有：</p>
+<p data-line="67" class="code-line">常用的字符类有：</p>
 <table>
 <thead>
 <tr>
@@ -207,7 +210,7 @@
 </tr>
 </tbody>
 </table>
-<p data-line="73" class="code-line">通配符的案例：</p>
+<p data-line="76" class="code-line">通配符的案例：</p>
 <table>
 <thead>
 <tr>
@@ -254,7 +257,8 @@
 </tr>
 </tbody>
 </table>
-<p data-line="86" class="code-line">9、<code>cp</code>的参数：</p>
+<br>
+<p data-line="90" class="code-line">9、<code>cp</code>的参数：</p>
 <table>
 <thead>
 <tr>
@@ -285,70 +289,208 @@
 </tr>
 </tbody>
 </table>
-<p data-line="95" class="code-line"><code>cp</code>、<code>mv</code>、<code>rm</code>、<code>mkdir</code>等均可用<code>-v</code>参数来输出帮助命令。用<code>man/info command</code>来查阅更为全面详细的命令参数信息。</p>
-<p data-line="97" class="code-line">10、硬链接与符号链接：</p>
-<p data-line="99" class="code-line"><strong>硬链接</strong>是最初Unix创建链接的方式。每个文件默认会有一个硬链接，这个硬链接给予文件名字。我们每创建一个硬链接，就为一个文件创建了一个额外的目录项。硬链接有两个重要局限性：</p>
+<p data-line="99" class="code-line"><code>cp</code>、<code>mv</code>、<code>rm</code>、<code>mkdir</code>等均可用<code>-v</code>参数来输出帮助命令。用<code>man（或者info） command</code>来查阅更为全面详细的命令参数信息。
+<br></p>
+<p data-line="102" class="code-line">10、硬链接与符号链接：</p>
+<p data-line="104" class="code-line"><strong>硬链接</strong>是最初Unix创建链接的方式。每个文件默认会有一个硬链接，这个硬链接给予文件名字。我们每创建一个硬链接，就为一个文件创建了一个额外的目录项。硬链接有两个重要局限性：</p>
 <ul>
-<li data-line="100" class="code-line">一个硬链接不能关联它所在文件系统之外的文件（不能关联与链接本身不在同一个磁盘分区上的文件）。</li>
-<li data-line="101" class="code-line">一个硬链接不能关联一个目录。</li>
+<li data-line="105" class="code-line">一个硬链接不能关联它所在文件系统之外的文件（不能关联与链接本身不在同一个磁盘分区上的文件）。</li>
+<li data-line="106" class="code-line">一个硬链接不能关联一个目录。</li>
 </ul>
-<p data-line="103" class="code-line"><strong>符号链接</strong>生效，是通过创建一个 特殊类型的文件，这个文件包含一个关联文件或目录的文本指针（类似“快捷方式”）。对于符号链接，有一点值得记住，执行的大多数文件操作是针对链接的对象，而不是链接本身。 而<code>rm</code>命令是个特例。当你删除链接的时候，删除链接本身，而不是链接的对象。</p>
-<p data-line="105" class="code-line"><code>ls -i</code>可显示文件索引节点号（index），索引节点相同则表示是同一个文件。</p>
-<p data-line="107" class="code-line">10、什么是命令？</p>
+<p data-line="108" class="code-line"><strong>符号链接</strong>生效，是通过创建一个 特殊类型的文件，这个文件包含一个关联文件或目录的文本指针（类似“快捷方式”）。对于符号链接，有一点值得记住，执行的大多数文件操作是针对链接的对象，而不是链接本身。 而<code>rm</code>命令是个特例。当你删除链接的时候，删除链接本身，而不是链接的对象。</p>
+<p data-line="110" class="code-line"><code>ls -i</code>可显示文件索引节点号（index），索引节点相同则表示是同一个文件。</p>
+<p data-line="112" class="code-line">11、什么是命令？</p>
 <ul>
-<li data-line="109" class="code-line">是一个可执行程序，就像我们所看到的位于目录/usr/bin 中的文件一样。 这一类程序可以是用诸如 C 和 C++语言写成的程序编译的二进制文件, 也可以是由诸如shell，perl，python，ruby等等脚本语言写成的程序 。</li>
-<li data-line="110" class="code-line">是一个内建于shell自身的命令。bash支持若干命令，内部叫做shell内部命令 (builtins)。例如，<code>cd</code>、<code>mv</code>等。</li>
-<li data-line="111" class="code-line">是一个 shell 函数。</li>
-<li data-line="112" class="code-line">是一个命令别名。我们可以定义自己的命令，建立在其它命令之上。</li>
+<li data-line="114" class="code-line">是一个可执行程序，就像我们所看到的位于目录/usr/bin 中的文件一样。 这一类程序可以是用诸如 C 和 C++语言写成的程序编译的二进制文件, 也可以是由诸如shell，perl，python，ruby等等脚本语言写成的程序 。</li>
+<li data-line="115" class="code-line">是一个内建于shell自身的命令。bash支持若干命令，内部叫做shell内部命令 (builtins)。例如，<code>cd</code>、<code>mv</code>等。</li>
+<li data-line="116" class="code-line">是一个 shell 函数。</li>
+<li data-line="117" class="code-line">是一个命令别名。我们可以定义自己的命令，建立在其它命令之上。</li>
 </ul>
-<p data-line="114" class="code-line">用以下命令查阅和理解命令：</p>
+<p data-line="119" class="code-line">用以下命令查阅和理解命令：</p>
 <ul>
-<li data-line="115" class="code-line"><code>type</code> – 说明怎样解释一个命令名</li>
-<li data-line="116" class="code-line"><code>which</code> – 显示会执行哪个可执行程序（只对可执行程序有效，不包括内建命令和命令别名）</li>
-<li data-line="117" class="code-line"><code>man</code> – 显示命令手册页</li>
-<li data-line="118" class="code-line"><code>apropos</code> – 显示一系列适合的命令</li>
-<li data-line="119" class="code-line"><code>info</code> – 显示命令</li>
-<li data-line="120" class="code-line"><code>whatis</code> – 显示一个命令的简洁描述</li>
-<li data-line="121" class="code-line"><code>alias</code> – 创建命令别名（e.g.，<code>alias foo='cd /usr; ls; cd -'，unalias foo</code>），仅在shell会话内有效。</li>
+<li data-line="120" class="code-line"><code>type</code> – 说明怎样解释一个命令名</li>
+<li data-line="121" class="code-line"><code>which</code> – 显示会执行哪个可执行程序（只对可执行程序有效，不包括内建命令和命令别名）</li>
+<li data-line="122" class="code-line"><code>man</code> – 显示命令手册页（养成使用<code>man</code>的习惯！）</li>
+<li data-line="123" class="code-line"><code>apropos</code> – 显示一系列适合的命令</li>
+<li data-line="124" class="code-line"><code>info</code> – 显示命令</li>
+<li data-line="125" class="code-line"><code>whatis</code> – 显示一个命令的简洁描述</li>
+<li data-line="126" class="code-line"><code>alias</code> – 创建命令别名（e.g.，<code>alias foo='cd /usr; ls; cd -'，unalias foo</code>），仅在shell会话内有效。</li>
 </ul>
-<p data-line="123" class="code-line">11、<strong>重定向</strong></p>
-<p data-line="125" class="code-line">（1）<strong>常用命令</strong></p>
+<p data-line="128" class="code-line">12、<strong>重定向</strong></p>
+<p data-line="130" class="code-line">（1）<strong>常用命令</strong></p>
 <ul>
-<li data-line="126" class="code-line"><code>cat</code> － 连接/显示文件</li>
-<li data-line="127" class="code-line"><code>sort</code> － 排序文本行</li>
-<li data-line="128" class="code-line"><code>uniq</code> － 报道或省略重复行</li>
-<li data-line="129" class="code-line"><code>grep</code> － 打印匹配行</li>
-<li data-line="130" class="code-line"><code>wc</code> － 打印文件中换行符，字，和字节个数</li>
-<li data-line="131" class="code-line"><code>head</code> － 输出文件第一部分</li>
-<li data-line="132" class="code-line"><code>tail</code> - 输出文件最后一部分</li>
-<li data-line="133" class="code-line"><code>tee</code> - 从标准输入读取数据，并同时写到标准输出和文件</li>
+<li data-line="131" class="code-line"><code>cat</code> － 连接/显示文件</li>
+<li data-line="132" class="code-line"><code>sort</code> － 排序文本行</li>
+<li data-line="133" class="code-line"><code>uniq</code> － 报道或省略重复行</li>
+<li data-line="134" class="code-line"><code>grep</code> － 打印匹配行</li>
+<li data-line="135" class="code-line"><code>wc</code> － 打印文件中换行符，字，和字节个数</li>
+<li data-line="136" class="code-line"><code>head</code> － 输出文件第一部分（<code>-n num</code>将将默认输出的行数设置为num）</li>
+<li data-line="137" class="code-line"><code>tail</code> - 输出文件最后一部分（同上）</li>
+<li data-line="138" class="code-line"><code>tee</code> - 从标准输入读取数据，并同时写到标准输出和文件</li>
 </ul>
-<p data-line="135" class="code-line">（2）与Unix主题“任何东西都是一个文件”保持一致，像<code>ls</code>这样的程序实际上把他们的运行结果输送到一个叫做<strong>标准输出</strong>的特殊文件（<code>stdout</code>），而它们的状态信息则送到另一个叫做<strong>标准错误</strong>的文件（<code>stderr</code>）。默认情况下，标准输出和标准错误都连接到屏幕。除此之外，许多程序从一个叫做标准输入（<code>stdin</code>）的设备得到输入，默认情况下，标准输入连接到键盘。I/O 重定向允许我们更改输出地点和输入来源。一般来说，输入来自键盘，输出送到屏幕，但是通过I/O重定向，我们可以做出改变。</p>
-<p data-line="137" class="code-line">（3）**标准输出重定向：**使用“&gt;”<em>重定向符后接文件名</em>将标准输出重定向到屏幕以外的一个文件（没错！屏幕也可以视为一个文件）。当我们使用“&gt;”重定向符来重定向输出结果时，目标文件总是从开头被重写。如果命令没有产生运行结果，只有错误信息，重定向操作开始重写文件，然后由于错误而停止，导致文件内容清空。使用”&gt;&gt;“重定向符将命令的输出追加到重定向文件。</p>
+<p data-line="140" class="code-line">（2）与Unix主题“任何东西都是一个文件”保持一致，像<code>ls</code>这样的程序实际上把他们的运行结果输送到一个叫做<strong>标准输出</strong>的特殊文件（<code>stdout</code>），而它们的状态信息则送到另一个叫做<strong>标准错误</strong>的文件（<code>stderr</code>）。默认情况下，标准输出和标准错误都连接到屏幕。除此之外，许多程序从一个叫做标准输入（<code>stdin</code>）的设备得到输入，默认情况下，标准输入连接到键盘。I/O 重定向允许我们更改输出地点和输入来源。一般来说，输入来自键盘，输出送到屏幕，但是通过I/O重定向，我们可以做出改变。</p>
+<p data-line="142" class="code-line">（3）<strong>标准输出重定向：</strong>
+使用“&gt;”<em>重定向符后接文件名</em>将标准输出重定向到屏幕以外的一个文件（没错！屏幕也可以视为一个文件）。当我们使用“&gt;”重定向符来重定向输出结果时，目标文件总是从开头被重写。如果命令没有产生运行结果，只有错误信息，重定向操作开始重写文件，然后由于错误而停止，导致文件内容清空。使用”&gt;&gt;“重定向符将命令的输出追加到重定向文件。</p>
 <ul>
-<li data-line="138" class="code-line"><code>ls -l /usr/bin &gt; ls-output.txt</code>（重写）</li>
-<li data-line="139" class="code-line"><code>ls -l /usr/bin &gt;&gt; ls-output.txt</code>（追加）</li>
+<li data-line="144" class="code-line"><code>ls -l /usr/bin &gt; ls-output.txt</code>（重写）</li>
+<li data-line="145" class="code-line"><code>ls -l /usr/bin &gt;&gt; ls-output.txt</code>（追加）</li>
 </ul>
-<p data-line="141" class="code-line">（4）**标准错误重定向：**文件流的前三个称作标准输入、输出和错误，shell内部分别将其称为文件描述符0、1和2。</p>
+<p data-line="147" class="code-line">（4）<strong>标准错误重定向：</strong>
+文件流的前三个称作标准输入、输出和错误，shell内部分别将其称为文件描述符0、1和2。</p>
 <ul>
-<li data-line="142" class="code-line"><code>ls -l /bin/usr 2&gt; ls-error.txt</code>（如果命令有错误，则写入文件，否则文件为空）</li>
+<li data-line="149" class="code-line"><code>ls -l /bin/usr 2&gt; ls-error.txt</code>（如果命令有错误，则写入文件，否则文件为空）</li>
 </ul>
-<p data-line="144" class="code-line">（5）<strong>重定向标准输出和错误到同一个文件：</strong></p>
+<p data-line="151" class="code-line">（5）<strong>重定向标准输出和错误到同一个文件：</strong></p>
 <ul>
-<li data-line="145" class="code-line"><code>ls -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</code>（首先重定向标准输出到文件ls-output.txt，然后重定向文件描述符2（标准错误）到文件描述符1（标准输出）使用表示法<code>2&gt;&amp;1</code>。如果没出错，则标准错误为空，因此<code>ls-output.txt</code>不会被追加任何信息；如果出错了，则一开始<code>ls-output.txt</code>为空，但是标准错误不为空，并且内容又被写入到<code>ls-output.txt</code>。因此，这条命令可以做到重定向标准输出和错误到同一个文件）</li>
+<li data-line="152" class="code-line"><code>ls -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</code>（首先重定向标准输出到文件ls-output.txt，然后重定向文件描述符2（标准错误）到文件描述符1（标准输出）使用表示法<code>2&gt;&amp;1</code>。如果没出错，则标准错误为空，因此<code>ls-output.txt</code>不会被追加任何信息；如果出错了，则一开始<code>ls-output.txt</code>为空，但是标准错误不为空，并且内容又被写入到<code>ls-output.txt</code>。因此，这条命令可以做到重定向标准输出和错误到同一个文件）</li>
 </ul>
-<p data-line="147" class="code-line">（6）<strong>处理不必要的输出：</strong></p>
+<p data-line="154" class="code-line">（6）<strong>处理不必要的输出：</strong></p>
 <ul>
-<li data-line="148" class="code-line"><code>ls -l /bin/usr 2&gt; /dev/null</code>（这个文件是系统设备，叫做位存储桶，它可以 接受输入，并且对输入不做任何处理）</li>
+<li data-line="155" class="code-line"><code>ls -l /bin/usr 2&gt; /dev/null</code>（这个文件是系统设备，叫做位存储桶，它可以 接受输入，并且对输入不做任何处理）</li>
 </ul>
-<p data-line="150" class="code-line">（7）<strong>标准输入重定向：</strong>
+<p data-line="157" class="code-line">（7）<strong>标准输入重定向：</strong>
 <code>cat filename</code>会显示文件的内容，经常被用来显示简短的文本文件。因为<code>cat</code>可以接受不只一个文件作为参数，所以它也可以用来<strong>把文件连接在一起</strong>。比方说我们下载了一个大型文件，这个文件被分离成多个部分（USENET中的多媒体文件经常以这种方式分离），我们想把它们连起来。如果文件命名为：movie.mpeg.001 movie.mpeg.002 … movie.mpeg.099...，则可以通过</p>
-<pre><code data-line="152" class="code-line language-shell"><div>cat movie.mpeg.0* &gt; movie.mpeg
+<pre><code data-line="159" class="code-line language-shell"><div>cat movie.mpeg.0* &gt; movie.mpeg
 </div></code></pre>
-<p data-line="155" class="code-line">将它们的内容依次连接起来并写入文件movie.mpeg。</p>
-<p data-line="157" class="code-line">当<code>cat</code>没有给出任何参数时，它会从标准输入读入数据，又因为标准输入默认情况下连接到键盘，因此它正在等待我们输入数据。每当输入回车换行符时，cat 复制标准输入到标准输出，因此我们看到文本行重复出现。（使用<code>Ctrl-d</code>告诉标准输入它已经到达文件末尾EOF）。</p>
-<p data-line="159" class="code-line">可以用<code>cat &gt; filename</code>将标准输入写入“标准输出所重定向的文件”filename中。同样地，可以用<code>cat &lt; filename</code>
+<p data-line="162" class="code-line">将它们的内容依次连接起来并写入文件movie.mpeg。</p>
+<p data-line="164" class="code-line">当<code>cat</code>没有给出任何参数时，它会从标准输入读入数据，又因为标准输入默认情况下连接到键盘，因此它正在等待我们输入数据。每当输入回车换行符时，cat 复制标准输入到标准输出，因此我们看到文本行重复出现。（使用<code>Ctrl-d</code>告诉标准输入它已经到达文件末尾EOF）。</p>
+<p data-line="166" class="code-line">可以用<code>cat &gt; filename</code>将标准输入写入“标准输出所重定向的文件”filename中。同样地，可以用<code>cat &lt; filename</code>
 “从标准输入所重定向的文件”中读取内容到标准输出（和<code>cat filename</code>一致）。</p>
-<p data-line="162" class="code-line">（8）管道线：<code>cmd1</code>的标准输出可以通过管道送至<code>cmd2</code>的标准输入——<code>cmd1 | cmd2</code>。</p>
+<p data-line="169" class="code-line">（8）<strong>管道线：</strong>
+使用管道操作符<code>|</code>（竖杠），一个命令的标准输出可以通过管道送至另一个命令的标准输入：<code>cmd1</code>的标准输出可以通过管道送至<code>cmd2</code>的标准输入——<code>cmd1 | cmd2</code>。典型使用场景：</p>
+<ul>
+<li data-line="171" class="code-line"><code>ls -l /usr/bin | less</code>（将<code>ls</code>的输出作为<code>less</code>的输入）</li>
+</ul>
+<p data-line="173" class="code-line">（9）<strong>过滤器：</strong>
+管道线经常用来对数据完成复杂的操作。有时会把几个命令放在一起组成一个管道线，以这种方式使用的命令被称为过滤器。<strong>过滤器接受输入，以某种方式改变它，然后输出它</strong>。</p>
+<ul>
+<li data-line="175" class="code-line"><code>ls /bin /usr/bin | sort | less</code>（将两个目录的输出结果（有序列表）用<code>sort</code>排序后作为<code>less</code>的输入）</li>
+</ul>
+<p data-line="177" class="code-line"><code>uniq</code>命令经常和<code>sort</code>命令结合在一起使用。<code>uniq</code>从标准输入或单个文件名参数接受数据有序列表，默认情况下，从数据列表中删除任何重复行。如果只想看到重复的数据列表，使用<code>-d</code>选项。</p>
+<p data-line="179" class="code-line"><code>wc filename</code>打印出三个数字：包含在文件filename中的行数，单词数和字节数。<code>-l</code>选项限制命令输出只能报道行数。</p>
+<ul>
+<li data-line="180" class="code-line"><code>ls /bin /usr/bin | sort | uniq | wc -l</code>（统计两个目录下不同的文件的个数）</li>
+</ul>
+<p data-line="183" class="code-line">（10）<strong>打印匹配行：</strong>
+使用`grep·可以找到文件中的匹配文本。使用方式为：</p>
+<pre><code data-line="185" class="code-line language-shell"><div>grep pattern [file ...]
+</div></code></pre>
+<p data-line="188" class="code-line">当<code>grep</code>遇到一个文件中的匹配<strong>模式</strong>，它会打印出包含这个类型的行。<code>grep</code>能够匹配的模式可以很复杂（通过正则表达式实现）。显然，可以通过管道传递其所需要的输入（即<code>[file ...]</code>）。<code>grep</code>的选项：<code>-i</code>使得<code>grep</code>在执行搜索时忽略大小写（通常搜索是大小写敏感的），<code>-v</code>选项会告诉<code>grep</code>只打印不匹配的行。</p>
+<p data-line="190" class="code-line">（11）<strong>使用<code>tee</code>捕捉管道线内容</strong>：
+从标准输入读入数据，并且同时复制数据到标准输出（允许数据继续随着管道线流动）<strong>和一个或多个文件</strong>。当在某个中间处理阶段来捕捉一个管道线的内容时，这很有帮助。</p>
+<ul>
+<li data-line="192" class="code-line"><code>ls /usr/bin | tee ls.txt | grep zip</code>（将<code>ls</code>的输出在使用<code>grep</code>过滤之前先写入文件<code>ls.txt</code>中，与此同时，因为<code>ls</code>的输出也会被复制到标准输出，因此会作为<code>grep</code>的输入，从而将过滤结果打印到标准输出上）</li>
+</ul>
+<p data-line="194" class="code-line">13、模式展开，神秘和混乱的源泉</p>
+<p data-line="196" class="code-line">（1）在shell内输入一个命令之后，在执行命令前，shell首先会对其进行<strong>字符展开</strong>（回忆通配符<code>*</code>的丰富含义）。</p>
+<p data-line="198" class="code-line">（2）传递到<code>echo</code>命令的任一个参数都会在（屏幕上）显示出来。通配符所依赖的工作机制叫做<strong>路径名展开</strong>。结合通配符，我们可以使用<code>echo *</code>展示出当前目录下的所有文件（及目录）。其他类似的例子：</p>
+<ul>
+<li data-line="199" class="code-line"><code>echo .*</code>（显示所有隐藏文件）</li>
+<li data-line="200" class="code-line"><code>echo .[!.]?*</code>（在显示所有隐藏文件的基础上不显示<code>.</code>和<code>..</code>）</li>
+</ul>
+<p data-line="202" class="code-line">（3）使用<code>$((exper))</code>做<strong>算术表达式的展开</strong>（算术表达式仅支持整型数字）。因此可以使用<code>echo $((exper))</code>返回算术表达式的运算结果。</p>
+<p data-line="204" class="code-line">（4）<strong>花括号展开</strong>：从一个包含花括号的模式中创建多个文本字符串。花括号表达式本身可能包含：</p>
+<ul>
+<li data-line="205" class="code-line">一个逗号分开的字符串列表（不要加上空格），e.g.：<code>{A,B,C}</code></li>
+<li data-line="206" class="code-line">一个整数区间，e.g.：<code>{1..10}</code></li>
+<li data-line="207" class="code-line">一个字符区间，e.g.：<code>{A..Z}</code></li>
+</ul>
+<p data-line="209" class="code-line">花括号的展开可以嵌套：</p>
+<pre><code data-line="210" class="code-line language-shell"><div>(base) ➜  playground echo before-{A{1..3},B{a..b}}-end
+before-A1-end before-A2-end before-A3-end before-Ba-end before-Bb-end
+</div></code></pre>
+<p data-line="214" class="code-line"><strong>通过花括号展开，我们可以创建、移动或删除一系列文档。这比GUI操作快多了。</strong></p>
+<p data-line="216" class="code-line">（5）<strong>波浪线展开</strong>：波浪线<code>~</code>代表当前用户的home目录。</p>
+<p data-line="218" class="code-line">（6）<strong>参数展开</strong>（用<strong>变量展开</strong>更好理解一点）：使用<code>echo $VAR_NAME</code>对变量<code>VAR_NAME</code>进行展开，这在shell脚本中非常实用。常用例子：</p>
+<ul>
+<li data-line="219" class="code-line"><code>echo $USER</code>（显示当前用户名）</li>
+<li data-line="220" class="code-line"><code>echo $HOST</code>（显示当前主机名）</li>
+<li data-line="221" class="code-line"><code>echo $PATH</code>（显示全部命令的搜索目录）</li>
+</ul>
+<p data-line="223" class="code-line">使用<code>printenv</code>查看有效的变量。如果拼错了变量名，则展开得到空字符串。</p>
+<p data-line="225" class="code-line">（7）<strong>命令替换</strong>：通过<code>echo $(cmd)</code>把一个命令的输出作为展开模式来使用。例如，可以用<code>ls -l $(which python)</code>来显示当前<code>python</code>的版本。命令当然他也可以很复杂，如：</p>
+<pre><code data-line="226" class="code-line language-shell"><div>(base) ➜  ~ file $(ls /usr/local/bin/* | grep kube)
+/usr/local/bin/kubectl:        Mach-O 64-bit executable x86_64
+/usr/local/bin/kubectl.docker: Mach-O 64-bit executable x86_64
+</div></code></pre>
+<p data-line="232" class="code-line">（8）<strong>引用</strong>：<br>
+首先分析一下输出：</p>
+<ul>
+<li data-line="234" class="code-line"><code>echo this is  a  test</code>（输出<code>this is a test</code>，shell会利用<strong>单词分割</strong>删除掉参数列表中多余的空格。在默认情况下，单词分割机制会在单词中寻找<strong>空格，制表符，和换行符</strong>，并把它们看作单词之间的界定符。这意味着“无引用”的空格，制表符和换行符都不是文本的一部分，它们只作为分隔符使用（对单个字符的引用通过转义字符<code>\</code>实现）。由于它们把单词分为不同的参数，所以在上面的例子中，命令行包含一个带有四个不同参数的命令）</li>
+<li data-line="235" class="code-line"><code>echo total num: $100.00 xyz</code>（macOS下输出<code>total num: .00 xyz</code>，这是因为<code>$100</code>被解读为变量引用，但是不存在名为<code>100</code>的变量，因此展开得到空字符串）</li>
+</ul>
+<p data-line="237" class="code-line">（8.1）<strong>使用双引号禁用单词分割</strong>：</p>
+<p data-line="239" class="code-line">假设当前目录下存在名为<code>my test.txt</code>的文件，使用<code>ls -l my test.txt</code>会将单词分割为<code>my</code>和<code>test.txt</code>，结果显示两个文件均未找到。使用<code>ls -l &quot;my test.txt&quot;</code>则可得到期望的结果（这也解释了为什么文件命名时尽量不要使用空格）。</p>
+<p data-line="241" class="code-line">总结：如果把文本放在双引号中，shell使用的特殊字符都失去它们的特殊含义，被当作普通字符来看待。但是有几个例外：<code>$</code>，<code>\</code> (转义字符），和```（倒引号）。这意味着<strong>单词分割、路径名展开、波浪线展开和花括号展开</strong>都将失效，然而<strong>参数展开、算术展开和命令替换</strong>仍然执行。</p>
+<p data-line="243" class="code-line">单词分割机制带来的有趣现象：</p>
+<pre><code data-line="244" class="code-line language-shell"><div>(base) ➜  ~ echo $(cal)
+January 2021 Su Mo Tu We Th Fr Sa 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+(base) ➜  ~ echo &quot;$(cal)&quot;
+    January 2021
+Su Mo Tu We Th Fr Sa
+                1  2
+ 3  4  5  6  7  8  9
+10 11 12 13 14 15 16
+17 18 19 20 21 22 23
+24 25 26 27 28 29 30
+31
+</div></code></pre>
+<p data-line="257" class="code-line">前者，因为单词分割机制，<code>$(cal)</code>被展开成包含40个参数的列表，<code>echo</code>命令将删除多余的界定符；后者，因为<code>$(cal)</code>被禁用展开，因此得到的是包含了多个空格、换行符、制表符的单个参数，被<code>echo</code>原样输出。</p>
+<p data-line="259" class="code-line">（8.2）<strong>使用单引号禁用所有展开</strong>：</p>
+<pre><code data-line="260" class="code-line language-shell"><div>(base) ➜  ~ echo text .l* {a,b} $(echo foo) $((2+2)) $USER
+text .lesshst .lldb .local a b foo 4 hliangzhao
+(base) ➜  ~ echo &quot;text .l* {a,b} $(echo foo) $((2+2)) $USER&quot;
+text .l* {a,b} foo 4 hliangzhao
+(base) ➜  ~ echo &#x27;text .l* {a,b} $(echo foo) $((2+2)) $USER&#x27;
+text .l* {a,b} $(echo foo) $((2+2)) $USER
+</div></code></pre>
+<p data-line="269" class="code-line">（8.3）<strong>使用<code>\</code>对单个字符进行转义</strong>：</p>
+<pre><code data-line="270" class="code-line language-shell"><div>(base) ➜  playground echo money: \$5.00
+money: $5.00
+(base) ➜  playground echo &quot;money: \$5.00&quot;
+money: $5.00
+(base) ➜  playground echo &#x27;money: \$5.00&#x27;
+money: \$5.00
+</div></code></pre>
+<p data-line="278" class="code-line">上述例子想要单纯地引用“美元符号”。注意，单引号中，所有展开都将失效。因此单个字符的转义也失效。下面这个例子中，我们想要单纯地引用空格符，<font color=red>然而它是作为<strong>路径名展开</strong>被使用的，因此双引号即可让转义失效【存疑】</font>。</p>
+<pre><code data-line="279" class="code-line language-shell"><div>(base) ➜  playground ls -l my\ file.txt
+-rw-r--r--@ 1 hliangzhao  staff  0 Jan 24 13:54 my file.txt
+(base) ➜  playground ls -l &quot;my\ file.txt&quot;
+ls: my\ file.txt: No such file or directory
+(base) ➜  playground ls -l &#x27;my\ file.txt&#x27;
+ls: my\ file.txt: No such file or directory
+</div></code></pre>
+<p data-line="288" class="code-line">（8.4）<strong>使用<code>\</code>表示特殊字符（控制码）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>转义序列</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\a</code></td>
+<td>响铃（”警告”－导致计算机嘟嘟响）</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>退格符</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>新的一行。在类 Unix 系统中，产生换行。</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>回车符</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>制表符</td>
+</tr>
+</tbody>
+</table>
+<p data-line="296" class="code-line">默认情况下，<code>\</code>被解释为对单个字符的转义，因此如果想用<code>\</code>表示控制码，需使用引号</p>
 
 </body></html>
