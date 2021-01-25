@@ -1,5 +1,5 @@
 ## 类Unix系统命令行速查清单
-（本文档所述内容的测试环境为macOS 10.15 & zsh 5.7）
+（本文档所述内容总结自http://billie66.github.io/TLCL/，测试环境为macOS 10.15 & zsh 5.7）
 - [类Unix系统命令行速查清单](#类unix系统命令行速查清单)
   - [一、学习shell](#一学习shell)
   - [二、配置文件和shell环境](#二配置文件和shell环境)
@@ -389,9 +389,9 @@ $	able
 - `chmod g+s dir`：授予目录`dir`setgid权限，得到`drwxrwsr0x`。
 - `chmod +t dir`：授予一个目录`dir`sticky权限，得到`drwxrwxrwt`。
 
-（5）通过`umask`设置默认权限：直接使用`umask`命令得到的是默认的权限（macOS为`022`），代表的含义是文件所有者同组用户和其他用户没有写权限（展开即`000 010 010`，出现`1`的位置表示关闭对应的文件属性）。
+（5）通过`umask`设置默认权限：直接使用`umask`命令得到的是默认的权限（macOS为`022`），代表的含义是文件所有者同组用户和其他用户没有写权限（展开即`000 010 010`，出现`1`的位置表示关闭对应的文件属性）。默认情况下，`umask`命令设置的掩码值只能在当前shell会话中生效，若当前shell会话结束后，则必须重新设置。
 
-（6）`su`和`sudo`：`su`命令允许我们假定为另一个用户的身份（substitute user identity），以这个用户的ID**启动一个新的shell会话**，或者是以这个用户的身份来**发布一个命令**。相比之下，`sudo`命令允许一个管理员设置一个叫做`/etc/sudoers`的配置文件，并且定义了一些具体命令，在假定的身份下，特殊用户可以**执行这些命令**。不同的类Unix系统可能会偏袒其中之一。在macOS中。通过`sudo -i`命令并输入当前用户的密码即可登陆root用户的shell。
+（6）`su`和`sudo`：`su`命令允许我们假定为另一个用户的身份（substitute user identity），以这个用户的ID**启动一个新的shell会话**，或者是以这个用户的身份来**发布一个命令**。相比之下，`sudo`命令允许一个管理员设置一个叫做`/etc/sudoers`的配置文件，并且定义了一些具体命令，在假定的身份下，特殊用户可以**执行这些命令**。不同的类Unix系统可能会偏袒其中之一。在macOS中。通过`sudo -i`命令并输入当前用户的密码即可登陆root用户的shell。（具体地，给一个普通用户分配超级用户权限，需要一个拥有超级用户权限的用户在`/etc/sudoers`中的适当位置添加`user-name ALL=(ALL) ALL`，其中`user-name`是该普通用户的名字。）
 
 （7）一般情况下，不要以root账户操作系统，因为这会导致Linux系统的安全性能被降低到和Windows系统相同的级别:-)。
 
@@ -407,12 +407,153 @@ Password:
 ```
 `chgrp`用来更改用户组所有权，这其实可以由`chown`来实现。之所以会有这个命令是因为旧版Unix系统中`chown`命令只能更改文件所有权。
 
-<font color=red>在http://billie66.github.io/TLCL/book/chap10.html“练习使用权限一栏”举了一个例子，需要彻底理解【待补充】。</font>
+（9）彻底理解下面这个例子：<br>
+假想我们有两个用户，他们分别是“bill”和“karen”。他们都有音乐CD收藏品，也愿意设置一个共享目录，在这个共享目录中，他们分别以Ogg Vorbis或MP3的格式来存储他们的音乐文件。通过sudo命令，用户bill具有超级用户访问权限。
 
-（9）通过`passwd [user]`修改自己或指定用户`user`的密码。
+【9.1】创建一个以bill和karen为成员的用户组`music`。
+
+【9.2】bill在他的家目录之外通过root全新啊创建一个共享目录：
+```shell
+[bill@busybox ~]$ sudo mkdir /usr/local/share/Music
+password:
+[bill@busybox ~]$ ls -ld /usr/local/share/Music
+drwxr-xr-x 2 root root 4096 2008-03-21 18:05 /usr/local/share/Music
+```
+注意，这个目录由root用户所有，并且权限为755。为了使这个目录共享，允许（用户karen）写入，bill需要更改目录用户组所有权和权限：
+```shell
+[bill@busybox ~]$ sudo chown :music /usr/local/share/Music
+[bill@busybox ~]$ sudo chmod 775 /usr/local/share/Music
+[bill@busybox ~]$ ls -ld /usr/local/share/Music
+drwxrwxr-x 2 root music 4096 2008-03-21 18:05 /usr/local/share/Music
+```
+现在这个目录由root用户拥有，并且允许用户组`group`读取和写入。因此，bill和karen能够在目录`/usr/local/share/Music`中创建文件。其他用户能够列出目录中的内容，但是不能在其中创建文件。但是，这就没问题了吗？
+
+**问题1**：现在bill在该目录下创建了一个文件，观察可发现该文件仅具有bill和karen的普通权限：
+```shell
+[bill@busybox ~]$ > /usr/local/share/Music/test_file
+[bill@busybox ~]$ ls -l /usr/local/share/Music
+-rw-r--r-- 1 bill    bill    0 2008-03-24 20:03 test_file
+```
+因为系统默认的掩码值为`0022`（linux系统），因此karen此时无法修改bill创建的文件。如果这是一个音频文件，那么不修改它也没什么问题，但是通常音频会按照艺术家、日期和专辑的方式存储，是需要在该共享目录下创建新目录的，如果不具备对该共享目录下的目录的写权限，那么karen就无法添加音频！解决方案：修改掩码值。
+
+**问题2**：bill、创建的文件和目录的用户组默认是bill的主要组，而非用户组`music·。解决方案：设置此共享目录的setgid位。
+```shell
+[bill@busybox ~]$ sudo chmod g+s /usr/local/share/Music
+[bill@busybox ~]$ ls -ld /usr/local/share/Music
+drwxrwsr-x 2 root music 4096 2008-03-24 20:03 /usr/local/share/Music
+
+[bill@busy box ~]$ umask 0002
+
+[bill@busybox ~]$ rm /usr/local/share/Music/test_file
+
+[bill@busybox ~]$ > /usr/local/share/Music/test_file
+[bill@busybox ~]$ mkdir /usr/local/share/Music/test_dir
+[bill@busybox ~]$ ls -l /usr/local/share/Music
+drwxrwsr-x 2 bill   music 4096 2008-03-24 20:24 test_dir
+-rw-rw-r-- 1 bill   music 0 2008-03-24 20:22 test_file
+```
+现在，创建的文件和目录都具有正确的权限，允许用户组music的所有成员在目录Music中创建文件和目录。
+
+（10）通过`passwd [user]`修改自己或指定用户`user`的密码。
 
 16、进程
 
+（1）进程，就是Linux组织安排正在等待使用CPU的各种程序的方式。需要熟练掌握的命令：
+- `ps` – 报告当前进程快照（process status）
+- `top` – 显示任务
+- `jobs` – 列出活跃的任务
+- `bg` – 把一个任务放到后台执行
+- `fg` – 把一个任务放到前台执行
+- `kill` – 给一个进程发送信号
+- `killall` – 杀死指定名字的进程
+- `shutdown` – 关机或重启系统
+
+（2）当系统启动的时候，内核先把一些它自己的活动初始化为进程，然后运行一个叫做`init`的程序。`init`，依次地，再运行一系列的称为`init`脚本的shell脚本（位于`/etc`），它们可以启动所有的系统服务。其中许多系统服务以守护（daemon）程序的形式实现，守护程序仅在后台运行，没有任何用户接口（User Interface）。这样，即使我们没有登录系统，至少系统也在忙于执行一些例行事务。
+
+（3）在进程方案中，一个程序可以发起（launch）另一个程序被表述为**一个父进程可以产生一个子进程**。
+内核维护每个进程的信息，以此来保持事情有序。例如，系统分配给每个进程一个数字，这个数字叫做进程ID或PID。PID号按升序分配，init进程的PID总是1。内核也对分配给每个进程的内存和就绪状态进行跟踪以便继续执行这个进程。像文件一样，进程也有所有者、用户ID和有效用户ID等。
+
+（4）使用`ps`命令：默认情况下，`ps`不会显示很多进程信息，只是列出与当前终端会话相关的进程。其中`TTY`指进程的控制终端（下面的例子中，终端编号为`s000`）。
+```shell
+(base) ➜  ~ ps
+  PID TTY           TIME CMD
+82302 ttys000    0:01.87 -zsh
+```
+（5）使用`ps x`显示所有进程：
+```shell
+(base) ➜  ~ ps x
+  PID   TT  STAT      TIME COMMAND
+  348   ??  S      0:00.60 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+  350   ??  S      1:05.19 /usr/sbin/cfprefsd agent
+  ... ...
+82301 s000  Ss     0:00.08 login -fp hliangzhao        # 小写的s表示session leader
+82302 s000  S      0:01.93 -zsh
+85867 s000  R+     0:00.00 ps x
+```
+其中`??`表示没有控制终端，`STAT`表示当前状态（通过`man ps`查询更为细致的状态）：
+
+| 状态 | 含义
+| --- | ---
+| `R` | 运行中。这意味着，进程正在运行或准备运行。
+| `S` | 正在睡眠。进程没有运行，而是，正在等待一个事件，比如说，一个按键或者网络分组。
+| `D` | 不可中断睡眠。进程正在等待I/O，比方说，一个磁盘驱动器的I/O。
+| `T` | 已停止。已经指示进程停止运行。
+| `Z` | 一个死进程或“僵尸”进程。这是一个已经终止的子进程，但是它的父进程还没有清空它。（父进程没有把子进程从进程表中删除）
+| `<` | 一个高优先级进程。这可能会授予一个进程更多重要的资源，给它更多的CPU时间。进程的这种属性叫做niceness。具有高优先级的进程据说是不好的（less nice），因为它占用了比较多的CPU时间，这样就给其它进程留下很少时间。
+| `N` | 低优先级进程。一个低优先级进程（一个“nice”进程）只有当其它高优先级进程被服务了之后，才会得到处理器时间。
+
+（6）使用`ps aux`显示属于每个用户的进程信息。下面给出了macOS下的输出。其中`RSS`表示进程占用的物理内存的大小，以千字节为单位。`VSZ`表示虚拟内存大小。
+```shell
+(base) ➜  ~ ps aux
+USER               PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+hliangzhao       91320   1.3  0.0  4335120   5220 s000  S    10:15PM   0:00.60 -zsh
+hliangzhao         364   1.2  0.0  4351608   4884   ??  S    Tue02PM   1:44.93 /usr/sbin/distnoted agent
+```
+
+（7）`ps`提供的是命令执行时刻的快照，用`top`查看动态实时的信息。
+
+（8）使用Ctrl-c，中断一个程序。这意味着，我们礼貌地要求终止这个程序。使用`proc &`将进程`proc`放在后台执行。通过`fg %job-id`将job编号为`job-id`的进程放在前台运行。显然，通过`bg %job-id`又可以将job编号为`job-id`的进程放到后台。区分suspended和terminated！
+```shell
+(base) ➜  ~ ps
+  PID TTY           TIME CMD
+91320 ttys000    0:01.42 -zsh
+(base) ➜  ~ python &
+[1] 92274
+Python 3.7.9 (default, Aug 31 2020, 07:22:35)
+[Clang 10.0.0 ] :: Anaconda, Inc. on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+[1]  + 92274 suspended (tty output)  python       # job的id为1
+(base) ➜  ~ ps
+  PID TTY           TIME CMD
+91320 ttys000    0:01.53 -zsh
+92274 ttys000    0:00.03 python
+(base) ➜  ~ jobs
+[1]  + suspended (tty output)  python
+(base) ➜  ~ fg %1                      # 不加上job id也可以，因为只有一个job
+[1]  + 92274 continued  python
+>>> print("hello")
+hello
+>>>
+[1]  + 92274 suspended  python         # 此处使用Ctrl-z停止一个前台进程（即放到后台运行）
+```
+
+（9）通过`kill PID`或者`kill %job-id`杀死一个PID为`PID`（或job id为`job-id`）的进程（terminated）。
+`kill`命令不是真的“杀死”程序，而是给程序发送信号。**信号是操作系统与程序之间进行通信时所采用的几种方式中的一种。**在使用Ctrl-c和Ctrl-z的过程中我们已经看到信号的实际用法。当终端接受了其中一个按键组合后，它会给在前端运行的程序发送一个信号。在使用Ctrl-c的情况下，会发送一个叫做INT（Interrupt，中断）的信号；当使用Ctrl-z时，则发送一个叫做TSTP（Terminal Stop，终端停止）的信号。程序，相应地，监听信号的到来，当程序接到信号之后，则做出响应。一个程序能够监听和响应信号这件事允许一个程序做些事情，比如，当程序接到一个终止信号时，它可以保存所做的工作。
+
+（10）如上所述，`kill`的语法形式其实是这样：`kill [-signal] PID`，当没有指定signal时，默认为发送terminate信号。signal指定方式：`kill -编号 PID`或者`kill -SIG名字 PID`。此外，信号的发送者必须为进程的所有者或者超级用户。
+
+| 编号 | 名字 | 含义
+| --- | --- | ---
+| 1 | HUP | 挂起（Hangup）。这是美好往昔的残留部分，那时候终端机通过电话线和调制解调器连接到远端的计算机。这个信号被用来告诉程序，控制的终端机已经“挂断”。 通过关闭一个终端会话，可以展示这个信号的作用。在当前终端运行的前台程序将会收到这个信号并终止。许多守护进程也使用这个信号，来重新初始化。这意味着，当一个守护进程收到这个信号后， 这个进程会重新启动，并且重新读取它的配置文件。Apache 网络服务器守护进程就是一个例子。
+| 2 | INT | 中断。实现和Ctrl-c一样的功能，由终端发送。通常，它会终止一个程序。
+| 9 | KILL | 杀死。这个信号很特别。尽管程序可能会选择不同的方式来处理发送给它的信号，其中也包含忽略信号，但是KILL信号从不被发送到目标程序。而是内核立即终止这个进程。当一个进程以这种方式终止的时候，它没有机会去做些“清理”工作，或者是保存工作。因为这个原因，把KILL信号看作最后一招，当其它终止信号失败后，再使用它。
+| 15 | TERM | 终止。这是kill命令发送的默认信号。如果程序仍然“活着”，可以接受信号，那么这个它会终止。
+| 18 | CONT | 继续。在一个停止信号后，这个信号会恢复进程的运行。
+| 19 | STOP | 停止。这个信号导致进程停止运行，而不是终止。像KILL信号，它不被发送到目标进程，因此它不能被忽略。
+| 3 | QUIT | 退出
+| 11 | SEGV | 段错误（Segmentation Violation）。如果一个程序非法使用内存，就会发送这个信号。也就是说， 程序试图写入内存，而这个内存空间是不允许此程序写入的。
+| 20 | TSTP | 终端停止(Terminal Stop)。当按下 Ctrl-z 组合键后，终端发送这个信号。不像 STOP 信号， TSTP 信号由目标进程接收，且可能被忽略。
+| 28 | WINCH | 改变窗口大小（Window Change）。当改变窗口大小时，系统会发送这个信号。 一些程序，像 top 和 less 程序会响应这个信号，按照新窗口的尺寸，刷新显示的内容。
 ### 二、配置文件和shell环境
 
 ### 三、常见任务和基本工具
