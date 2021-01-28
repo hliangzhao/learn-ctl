@@ -7,14 +7,14 @@
 
 给出了对Linux系统应该有的基本认知。理解命令、展开、权限、进程等概念。
 
-[二、配置文件和shell环境](https://github.com/hliangzhao/learn-ctl/blob/main/01-learn-shell.md)
+[二、配置文件和shell环境](https://github.com/hliangzhao/learn-ctl/blob/main/02-config-shell.md)
 
 通过修改`.bash_profile`等文件对shell进行配置。
 
-[三、常见任务和基本工具](https://github.com/hliangzhao/learn-ctl/blob/main/01-learn-shell.md)
+[三、常见任务和基本工具](https://github.com/hliangzhao/learn-ctl/blob/main/03-tools.md)
 
 掌握软件包管理、文件管理、文本处理等常用命令和工具。
 
-[四、编写shell脚本](https://github.com/hliangzhao/learn-ctl/blob/main/01-learn-shell.md)
+[四、编写shell脚本](https://github.com/hliangzhao/learn-ctl/blob/main/04-write-shell-scripts.md)
 
 学习正确地编写shell脚本。

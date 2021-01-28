@@ -1,4 +1,4 @@
-## 二、配置文件和shell环境
+## 配置文件和shell环境
 1、shell在环境中存储了两种基本类型的变量，分别是**环境变量**和**shell变量**。此外，shell也存储了一些可编程的数据，即**别名**（alias）和shell函数。
 
 2、通过`set`查看所有变量，使用`printenv`查看环境变量。`printenv VAR=NAME`和`echo $VAR-NAME`具有相同的效果。常见的环境变量：

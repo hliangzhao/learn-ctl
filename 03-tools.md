@@ -1,4 +1,6 @@
-## 三、常见任务和基本工具
+## 常见任务和基本工具
+
+### 软件包管理
 1、软件包管理是指系统中一种安装和维护软件的方法。今天，通过从**Linux发行版**中安装的软件包，已能满足许多人所有的软件需求。这不同于早期的Linux，人们需要下载和编译源码来安装软件。编译源码没有任何问题，事实上，拥有对源码的访问权限是Linux的伟大奇迹。它赋予我们检测和提高系统性能的能力。只是若有一个预先编译好的软件包处理起来要相对容易快速些。
 
 2、不同的Linux发行版使用不同的打包系统，一般而言，大多数发行版分别属于两大包管理技术阵营：Debian的`.deb`和红帽的`.rpm`。
@@ -87,6 +89,7 @@
 
 （15）Linux软件生态系统是基于开放源代码理念。如果一个程序开发人员发布了一款产品的源码，那么与系统发行版相关联的开发人员可能就会把这款产品打包，并把它包含在他们的资源库中。这种方法保证了这款产品能很好地与系统发行版整合在一起，同时为用户“一站式采购”软件提供了方便，从而用户不必去搜索每个产品的网站。
 
+### 存储和网络
 4、存储媒介<br>
 （1）管理存储设备的常用命令：
 - `mount` – 挂载一个文件系统
@@ -193,6 +196,7 @@ Last login: Mon Sep 08 13:23:11 2008
 
 关于SSH的内容，macOS上可以Terminus软件，windows上则可以使用PuTTY。
 
+### 查找、压缩和归档
 6、文件查找
 
 （1）查找文件相关的命令：
@@ -289,11 +293,140 @@ ls -l file1 file2 ...
 - **方法一**：将`;`改为`+`，即`find ~ -type f -name 'foo*' -exec ls -l '{}' '+'`。
 - **方法二**：使用`xargs`，即`find ~ -type f -name 'foo*' -print | xargs ls -l`。
 
-7、归档和备份<br>
+7、压缩和归档<br>
 （1）掌握常用的管理文件集合的程序：
 - `gzip` – 压缩或者展开文件
 - `tar` – 磁带打包工具
 - `zip` – 打包和压缩文件
 - `rsync` – 同步远端文件和目录
 
-（2）数据压缩
+（2）数据压缩<br>
+数据压缩就是一个删除冗余数据的过程。压缩算法（数学技巧被用来执行压缩任务）分为两大类，无损压缩和有损压缩。无损压缩保留了 原始文件的所有数据。这意味着，当还原一个压缩文件的时候，还原的文件与原文件一模一样。 而另一方面，有损压缩，执行压缩操作时会删除数据，允许更大的压缩。当一个有损文件被还原的时候， 它与原文件不相匹配; 相反，它是一个近似值。有损压缩的例子有 JPEG（图像）文件和 MP3（音频）文件。 
+
+接下来主要关注无损压缩工具。
+
+【1】使用`gzip filename`和`gunzip gz-filename`进行压缩和解压缩（用`gzip --help`）查看参数列表。下面的例子将某个目录列表作为压缩源并将压缩结果写入名为`foo.txt.gz`的文件：
+```shell
+ls -l /etc | gzip > foo.txt.gz
+```
+压缩后的`.gz`文件是二进制文件，通过`gunzip foo.txt.gz`进行解压缩。如果我们只想粗略地浏览下原始文件的内容，可以使用命令`gunzip -c foo.txt.gz | less`或`zless foo.txt.gz`，其中`-c`表示将解压缩的内容输出到stdout。此外，命令`zcat`等价于`gunzip -c`。
+
+【2】和`gzip`几乎一致，`bzip2`也是一个压缩程序，主要区别在于使用了不同的压缩算法（牺牲压缩时间提升压缩级别）。`bzip2`具有和`gzip`几乎一致的使用选项。相应地，使用`bunzip2`和`bzcat`程序来解压缩文件。
+
+【3】再次压缩已经压缩过的文件，可能会得到更大的文件。这是因为，如果一个文件已经不包含任何冗余信息，再次压缩只会添加关于此次压缩的信息。
+
+（3）归档<br>
+【1】归档就是收集许多文件，并把它们 捆绑成一个大文件的过程。归档经常作为系统备份的一部分来使用。当把旧数据从一个系统移到某 种类型的长期存储设备中时，也会用到归档程序。
+
+【2】在类 Unix 的软件世界中，`tar`程序是用来归档文件的经典工具。它曾是一款制作磁带备份的工具，现在仍然被用来完成传统任务，但适用于其它的存储设备。我们经常看到扩展名为`.tar`或者`.tgz`的文件，它们各自表示“普通” 的 tar 包和被`gzip`程序压缩过的 tar 包。一个 tar 包可以由**一组独立的文件，一个或者多个目录，或者两者混合体**组成。
+
+【3】`tar`的（简单）语法如下：`tar mode[options] pathname ...`。这里`mode`前面加不加`-`都可以。部分常用的mode（模式）有：
+
+模式 | 说明
+--- | ---
+`c` | 为文件和／或目录列表创建归档文件。
+`x` | 抽取归档文件。
+`r` |追加具体的路径到归档文件的末尾。
+`t` | 列出归档文件的内容。
+<br>
+
+更为具体的使用方法如下：
+```shell
+(base) ➜  playground tar --help
+tar(bsdtar): manipulate archive files
+First option must be a mode specifier:
+  -c Create  -r Add/Replace  -t List  -u Update  -x Extract
+Common Options:
+  -b #  Use # 512-byte records per I/O block
+  -f <filename>  Location of archive
+  -v    Verbose
+  -w    Interactive
+Create: tar -c [options] [<file> | <dir> | @<archive> | -C <dir> ]
+  <file>, <dir>  add these items to archive
+  -z, -j, -J, --lzma  Compress archive with gzip/bzip2/xz/lzma
+  --format {ustar|pax|cpio|shar}  Select archive format
+  --exclude <pattern>  Skip files that match pattern
+  -C <dir>  Change to <dir> before processing remaining files
+  @<archive>  Add entries from <archive> to output
+List: tar -t [options] [<patterns>]
+  <patterns>  If specified, list only entries that match
+Extract: tar -x [options] [<patterns>]
+  <patterns>  If specified, extract only entries that match
+  -k    Keep (don't overwrite) existing files
+  -m    Don't restore modification times
+  -O    Write entries to stdout, don't restore to disk
+  -p    Restore permissions (including ACLs, owner, file flags)
+bsdtar 3.3.2 - libarchive 3.3.2 zlib/1.2.11 liblzma/5.0.5 bz2lib/1.0.6
+```
+
+**`tar`的使用案例：**<br>
+- `tar cf playground.tar playground`：创建了一个名为`playground.tar`的 tar 包，其包含整个 playground 目录层次结果。
+- `tar tf playground.tar`：列出归档文件`playground.tar`的内容。
+- `tar xf ../playground.tar`：抽取/安装归档文件`playground.tar`的内容到新目录（相对路径暗示了`playground.tar`和新目录之间的位置关系），即创建了一个精确的原始文件的副本。
+
+默认情况下，待归档的文件/目录名是相对的，但是如果我们以绝对路径来指定待归档的文件/目录名，那么它们也会被以绝对路径的方式被归档。下面给出了一个例子：
+```shell
+(base) ➜  playground ls -l
+total 0
+drwxr-xr-x@   2 hliangzhao  staff    64 Jan 28 10:51 bar
+drwxr-xr-x@ 102 hliangzhao  staff  3264 Jan 28 10:34 foo     # 待归档的目录
+(base) ➜  playground pwd
+/Users/hliangzhao/Documents/Codes/playground
+(base) ➜  playground tar cf foo.tar /Users/hliangzhao/Documents/Codes/playground/foo
+tar: Removing leading '/' from member names
+(base) ➜  playground cd bar; tar xf ../foo.tar
+(base) ➜  bar tree -L 6    # 抽取后发现是以绝对路径的方式被归档的
+.
+└── Users
+    └── hliangzhao
+        └── Documents
+            └── Codes
+                └── playground
+                    └── foo
+
+6 directories, 0 files
+```
+**这种方式很有用，因为这样就允许我们抽取文件到任意位置，而不是强制地把抽取的文件放置到原始目录下。**
+例如以下这个文件迁移的案例：通过移动硬盘或者`ssh`将一个OS中的`home`的内容归档后到另一个目录的根目录下抽取，内容就被全部还原了。
+
+结合`find`命令，从给定目录中搜索特定的文件和目录用于归档。一些示例：
+- `find playground -name 'file-A' -exec tar rf playground.tar '{}' '+'`：使用`find`命令来匹配`playground`目录中所有名为`file-A`的文件，然后使用`-exec`行为来唤醒带有追加模式（r）的tar命令，把匹配的文件添加到归档文件`playground.tar`里面。典型使用场景：使用`tar`和`find`命令，来创建逐渐增加的目录树或者整个系统的备份，是个不错的方法。通过`find`命令匹配新于某个时间戳的文件，我们就能够创建一个归档文件，其只包含新于上一个`tar`包的文件，假定这个时间戳文件恰好在每个归档文件创建之后被更新了。
+- `find playground -name 'file-A' | tar cf - --files-from=- | gzip > playground.tgz`：使用`find`程序产生了一个匹配文件列表，然后把它们管道到`tar`命令中。 如果指定了文件名`-`，则其被看作是**标准输入或输出**，正是所需（使用“-”来表示标准输入／输出的惯例，也被大量的其它程序使用）。这个`--file-from`选项（也可以用`-T`来指定）导致`tar`命令从一个文件而不是命令行来读入它的路径名列表。最后，这个由`tar`命令产生的归档文件被管道到`gzip`命令中，然后创建了压缩归档文件`playground.tgz`。此`.tgz`扩展名是命名由`gzip`压缩的`tar`文件的常规扩展名。有时候也会使用`.tar.gz`这个扩展名。
+
+上方这个例子，使用管道将归档文件送入`gzip`进行压缩。实际上可以直接在归档的时候指定`z`或者`j`选项进行直接压缩：`find playground -name 'file-A' | tar czf playground.tgz -T -`。`z`对应于`gzip`，`j`对应于`bzip2`。
+
+【4】使用`zip`对文件和目录进行打包并压缩（通过`zip --help`查询命令格式）。常用命令：
+- `zip -r playground.zip playground`：递归地将目录`playground`及其内容进行压缩并将结果写入`playground.zip`文件。压缩时会有一系列输出，例如“store”没有压缩的文件，或者“deflate”文件（即执行压缩操作）。一个文件没有被压缩大概率是因为它本身是空文件，没有可以被压缩的地方。
+- `unzip zip-filer-path`：解压缩文件`zip-filer-path`到当前目录。
+- `find playground -name "file-A" | zip -@ file-A.zip`：使用`-@`从管道中读取要打包并压缩的文件。`zip`命令支持把它的输出写入到标准输出，但是`unzip`不支持不接受标准输入。
+- `ls -l /etc/ | zip ls-etc.zip -`：使用`-`从标准输入中读取要打包并压缩的文件。
+
+对于`zip`命令（与`tar`命令相反）要注意一点，就是如果指定了一个已经存在的文件包，其被更新而不是被替代。这意味着会保留此文件包，但是会添加新文件，同时替换匹配的文件。
+
+【5】`zip`和`unzip`命令的主要用途是为了和 Windows 系统交换文件，而不是在 Linux 系统中执行压缩和打包操作，`tar`和`gzip`程序在 Linux 系统中更受欢迎。
+
+【6】使用`rsync`做文件备份。常用的（简化的）命令结构如下：`rsync options src dst`，其中`src`和`dst`是下列选项之一：
+- 一个本地文件或目录
+- 一个远端文件或目录，以`[user@]host:path`的形式存在
+- 一个远端 rsync 服务器，由`rsync://[user@]host[:port]/path`指定
+注意，至少要有一个是本地文件或目录。`rsync`通过检查`src`和`dst`的差异来做增量式更新。
+
+**典型应用场景**：在外部硬盘上做文件备份：
+```shell
+sudo rsync -av --delete /etc /home /usr/local /media/BigDisk/backup
+```
+其中`/media/BigDisk`是外部硬盘的挂载位置，`/etc`，`\home`和`/usr/local`是待同步的目录，`-–delete`这个选项，来删除可能在备份设备中已经存在但却不再存在于源设备中的文件。这是一个不错的（虽然不理想）方式来保存少量的系统备份文件的方法。
+
+**使用`rsync`同步本地目录和可通过`ssh`连接的远程主机的目录**：
+```shell
+sudo rsync -av --delete --rsh=ssh /etc /home /usr/local remote-sys:/backup
+```
+`rsync`可以被用来在网络间同步文件的第二种方式是通过使用 rsync 服务器。`rsync`可以被配置为一个守护进程，监听即将到来的同步请求。
+```shell
+rsync -av -delete rsync://rsync.gtlib.gatech.edu/fedora-linux-core/development/i386/os fedora-devel
+```
+上面的命令将某个 rsync 服务器维护的linux操作系统镜像不同到本地某目录下。
+
+### 正则表达式
+8、正则表达式是一种符号表示法，被用来识别文本模式。在某种程度上，它们与匹配文件和路径名的 shell 通配符比较相似，但其规模更庞大。许多命令行工具和大多数的编程语言都支持正则表达式，以此来帮助解决文本操作问题。然而，并不是所有的正则表达式都是一样的，这就进一步混淆了事情；不同工具以及不同语言之间的正则表达式都略有差异。我们将会限定 POSIX 标准中描述的正则表达式（其包括了大多数的命令行工具）。
+
