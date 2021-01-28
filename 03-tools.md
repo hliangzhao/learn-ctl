@@ -1,4 +1,10 @@
 ## 常见任务和基本工具
+- [常见任务和基本工具](#常见任务和基本工具)
+  - [软件包管理](#软件包管理)
+  - [存储和网络](#存储和网络)
+  - [查找、压缩和归档](#查找压缩和归档)
+  - [正则表达式](#正则表达式)
+  - [文本处理](#文本处理)
 
 ### 软件包管理
 1、软件包管理是指系统中一种安装和维护软件的方法。今天，通过从**Linux发行版**中安装的软件包，已能满足许多人所有的软件需求。这不同于早期的Linux，人们需要下载和编译源码来安装软件。编译源码没有任何问题，事实上，拥有对源码的访问权限是Linux的伟大奇迹。它赋予我们检测和提高系统性能的能力。只是若有一个预先编译好的软件包处理起来要相对容易快速些。
@@ -430,3 +436,228 @@ rsync -av -delete rsync://rsync.gtlib.gatech.edu/fedora-linux-core/development/i
 ### 正则表达式
 8、正则表达式是一种符号表示法，被用来识别文本模式。在某种程度上，它们与匹配文件和路径名的 shell 通配符比较相似，但其规模更庞大。许多命令行工具和大多数的编程语言都支持正则表达式，以此来帮助解决文本操作问题。然而，并不是所有的正则表达式都是一样的，这就进一步混淆了事情；不同工具以及不同语言之间的正则表达式都略有差异。我们将会限定 POSIX 标准中描述的正则表达式（其包括了大多数的命令行工具）。
 
+9、和正则表达式打交道的程序是`grep`（global regular expression print），本质上，grep 程序会在其输入中查找一个指定的正则表达式，并输出匹配行。
+
+（1）`grep`的一般使用形式是：`grep [options] regex [file ...]`。
+
+### 文本处理
+10、下面处理文本常用的工具，需要熟练并灵活使用它们：
+- `cat` – 连接文件并且打印到标准输出
+- `sort` – 给文本行排序
+- `uniq` – 报告或者省略重复行
+- `cut` – 从每行中删除文本区域
+- `paste` – 合并文件文本行
+- `join` – 基于某个共享字段来联合两个文件的文本行
+- `comm` – 逐行比较两个有序的文件
+- `diff` – 逐行比较文件
+- `patch` – 给原始文件打补丁
+- `tr` – 翻译或删除字符（translate）
+- `sed` – 用于筛选和转换文本的流编辑器（stream editor）
+- `aspell` – 交互式拼写检查器（interactive spell checker）
+
+11、编写文档时，一个流行的方法是先用文本格式来编写一个大的文档，然后**使用一种标记语言来描述已完成文档的格式**。网页、科学论文（TeX）、程序的源代码等都是用这种方法编写的。以网页为例，它们是文本文档，使用HTML（超文本标记语言）或者是XML（可扩展的标记语言）作为标记语言来描述文档的可视格式。此外，email 也是一个基于文本的媒介。为了传输，甚至非文本的附件也被转换成文本表示形式。 
+
+在类 Unix 的系统中，输出会以纯文本格式发送到打印机，或者如果页面包含图形，其会被转换成一种文本格式的页面描述语言，以 PostScript 著称，然后再被发送给一款能产生图形点阵的程序，最后被打印出来。需要注意的是，MS-DOS 和它的衍生品使用回车（ASCII 13）和换行字符序列来终止每个文本行，而 Unix 通过一个换行符（ASCII 10）来结束一行。
+
+在类 Unix 系统中会发现许多命令行程序被用来支持系统管理和软件开发，并且文本处理程序也不例外。许多文本处理程序被设计用来解决软件开发问题。文本处理对于软件开发者而言至关重要，这是因为所有的软件都起始于文本格式。源代码，也就是程序员实际编写的一部分，总是文本格式。
+
+12、`cat`：链接内容并输出到标准输出。
+
+（1）带上`-e`选项来显示non-printing characters：
+```shell
+(base) ➜  playground cat -e foo.txt
+	The quick brown fox jumped over the lazy dog.$
+```
+上面的例子中，第一个符号是制表符（Tab键或Ctrl-I），最后的字符`$`表示这是本行末尾。
+
+（2）带上`-n`给文本添加行号，带上`-s`禁止输出多个空行。更多选项查询`man cat`。
+
+13、`sort`：对标准输入的内容或命令行中指定的一个或多个文件按照行的内容进行排序，然后把排序结果发送到标准输出。
+`sort`程序能接受命令行中的多个文件作为参数，此时是对这些文件的所有行排序并输出，使用管道可以讲排序结果写入一个新文件中，如`sort file1.txt file2.txt file3.txt > final_sorted_list.txt`。
+
+（1）`sort`常用的选项：
+选项 | 长选项 | 描述
+--- | --- | ---
+`-b` | `--ignore-leading-blanks` | 默认情况下，对整行进行排序，从每行的第一个字符开始。这个选项使`sort`程序忽略每行开头的空格，从第一个非空白字符开始排序。
+`-f` | `--ignore-case` | 让排序不区分大小写。
+`-n` | `--numeric-sort` | 基于字符串的数值来排序。使用此选项允许根据数字值执行排序，而不是字母值（要求数字出现在每行开头）。
+`-r` | `--reverse` | 按相反顺序排序。结果按照降序排列，而不是升序。
+`-k` | `--key=field1[,field2]` | 对从field1到field2之间的字符排序，而不是整个文本行。
+`-m` | `--merge` | 把每个参数看作是一个预先排好序的文件。把多个文件合并成一个排好序的文件，而没有执行额外的排序。
+`-o` | `--output=file` | 把排好序的输出结果发送到文件，而不是标准输出。
+`-t` | `--field-separator=char` | 定义域分隔字符。默认情况下，域由空格或制表符分隔。
+
+（2）排序某目录对硬盘空间的占用：
+```shell
+(base) ➜  playground du -s /usr/share/* | sort -nr | head
+130720	/usr/share/tokenizer
+72464	/usr/share/man
+33568	/usr/share/vim
+26272	/usr/share/icu
+25656	/usr/share/langid
+12880	/usr/share/zsh
+12496	/usr/share/terminfo
+11392	/usr/share/doc
+11112	/usr/share/firmware
+9032	/usr/share/cups
+(base) ➜  playground du -sh /usr/share/* | sort -nr | head
+768K	/usr/share/cracklib
+340K	/usr/share/sandbox
+316K	/usr/share/screen
+284K	/usr/share/calendar
+220K	/usr/share/kpep
+216K	/usr/share/examples
+140K	/usr/share/pmenergy
+ 84K	/usr/share/misc
+ 64M	/usr/share/tokenizer
+ 36K	/usr/share/CoreDuetDaemonConfig.bundle
+```
+上例中，使用`du`显示目录`/usr/share/`下的内容占用的容量。因为数字出现在开头，因此`sort`带上`-n`用行首的数字大小排序。当`du`带上`-h`选项时，用human-readable的方式显示空间占用。因为单位（`K`、`M`等）不会被放进来排序，所以两次排序的结果是不一样的（当一个字符不再是数字时，排序用的数字读取到此为止）。
+
+（3）`-k`的使用：<br>
+**示例一：**
+照第五个字段的数字大小（文件大小）做为排序的依据。其中，空白字符（空格和制表符）被当作是字段间的界定符。
+```shell
+(base) ➜  playground ls -l /usr/bin | sort -nr -k 5 | head
+-rwxr-xr-x   1 root   wheel  14132944 Sep 22 08:30 php
+-rwxr-xr-x   1 root   wheel   5665520 Sep 22 08:29 fileproviderctl
+```
+
+**示例二：**
+指定多个排序关键值。一个关键值可能包括一个字段区域。如果没有指定区域（如同之前的例子），`sort`程序会使用一个键值，其始于指定的字段，一直扩展到行尾。
+```shell
+(base) ➜  playground sort --key=1,1 --key=2n distros.txt
+Fedora          5.1    03/20/2006
+Fedora          6      10/24/2006
+Fedora          7      05/31/2007
+Fedora          8      11/08/2007
+Fedora          8      11/08/2007
+Fedora          10     11/25/2008
+SUSE            10.2   12/07/2006
+SUSE            10.3   10/04/2007
+SUSE            11.04  06/19/2008
+Ubuntu          8.04   04/24/2008
+```
+第一个排序关键值是`--key=1,1`，表明始于并且结束于第一个字段；第二个排序关键值是**第二个字段的数值**。后一轮排序是在前一轮排序的基础之上进行的。
+
+上个示例中，如何按照日期的早晚进行排序？注意此处的日期是美式记法。`sort`程序提供了一种方式：`key`选项允许在字段中指定偏移量，所以我们能在字段中定义键值。下面给出了使用方法。
+```shell
+(base) ➜  playground sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt
+Fedora          10     11/25/2008
+SUSE            11.04  06/19/2008
+Ubuntu          8.04   04/24/2008
+Fedora          8      11/08/2007
+Fedora          8      11/08/2007
+SUSE            10.3   10/04/2007
+Fedora          7      05/31/2007
+SUSE            10.2   12/07/2006
+Fedora          6      10/24/2006
+Fedora          5.1    03/20/2006
+```
+通过指定`-k 3.7`，我们指示`sort`程序使用一个排序键值，其**始于第三个字段中的第七个字符**（遇到非数字字符自动截止），对应于年的开头。同样地，我们指定`-k 3.1`和`-k 3.4`来分离日期中的月和日。我们也添加了`n`和`r`选项来实现一个逆向的数值排序。这个`b`选项用来删除日期字段中开头的空格（行与行之间的空格数迥异，因此会影响`sort`程序的输出结果）。
+
+（4）`sort`默认使用空格和制表符界定字段。使用`-t`可以手动指定分隔符。例如`sort -t ':' -k 7 /etc/passwd`。
+
+14、`uniq`：当给定一个**排好序的**文件（包括标准输出），`uniq`会删除任意重复行，并且把结果发送到标准输出。 它常常和`sort`程序一块使用，来清理重复的输出。尽管如此，但`sort`程序本身支持一个`-u`选项，其可以从排好序的输出结果中删除重复行。
+
+`uniq`的典型使用场景是报告重复行的个数（带上`-c`选项），如：
+```shell
+[me@linuxbox ~]$ sort foo.txt | uniq -c
+        2 a
+        2 b
+        2 c
+```
+
+15、`cut`：从文本行中抽取文本，并把其输出到标准输出。它能够接受多个文件参数或者标准输入。`cut提供了如下选项用于指定待抽取的文本：
+选项 | 说明
+--- | ---
+`-c char_list` | 从文本行中抽取由`char_list`定义的文本。这个列表可能由一个或多个逗号分隔开的数值区间组成。
+`-f field_list` | 从文本行中抽取一个或多个由`field_list`定义的字段。这个列表可能包括一个或多个字段，或由逗号分隔开的字段区间。
+`-d delim_char` | 当指定`f`选项之后，使用`delim_char`做为字段分隔符。**默认情况下，字段之间必须由单个 tab 字符分隔开。**
+`--complement` | 抽取整个文本行，除了那些由`-c`和`／`或`-f`选项指定的文本。
+
+下面的例子给出了`-f`和`-c`的使用示例。
+```shell
+(base) ➜  playground cat distros.txt          # 每个字段用过tab分隔
+SUSE	10.2	12/07/2006
+Fedora	10	11/25/2008
+Ubuntu	6.10	10/26/2008
+(base) ➜  playground cut -f 3 distros.txt     # 抽取第三个字段
+12/07/2006
+11/25/2008
+10/26/2008
+(base) ➜  playground cut -f 3 distros.txt | cut -c 7-10
+2006
+2008
+2008
+```
+因为用tab分隔时，每行文字长度很难一致，因此`-c`并不实用。但是，可以借助`expand`将tab展开为空格，这样每行对应字段的内容就可以对齐。这时候再采用`-c`即可。下面给出了一个例子：
+```shell
+(base) ➜  playground expand distros.txt | cut -c 23-
+2006
+2008
+2008
+```
+（对应地，还有`unexpand`将空格替换回tab）
+
+16、`paste`：读取多个文件（或标准输入），然后把每个文件中的字段整合成单个文本流，输入到标准输出。
+```shell
+(base) ➜  playground cat distros-dates.txt
+11/25/2008
+10/26/2008
+12/07/2006
+(base) ➜  playground cat distros-versions.txt
+Fedora	10
+Ubuntu	6.10
+SUSE	10.2
+(base) ➜  playground paste distros-dates.txt distros-versions.txt
+11/25/2008	Fedora	10
+10/26/2008	Ubuntu	6.10
+12/07/2006	SUSE	10.2
+```
+
+17、`join`：把来自于多个基于**共享关键域**的文件的数据结合起来（类似于关系型数据库中的join操作）。
+
+18、比较文本<br>
+（1）`comm`：这是一个很简单的命令，其格式为`comm [-123i] file1 file2`，接受且仅接受两个文件名作为输入，输出中的第一列表示`file1`特有的文本行，第二列表示`file2`特有的文本行，第三行则是二者共有的文本行。带上`-n`则隐藏第n列的内容。
+
+（2）`diff`：比`comm`复杂，支持许多输出格式，并且一次能处理许多文本文件。软件开发员经常使用`diff`程序来检查不同程序源码版本之间的更改，`diff`能够递归地检查源码目录，经常称之为源码树。**`diff`程序的一个常见用例是创建`diff`文件或者补丁，它会被其它程序使用，例如`patch`程序，来把文件从一个版本转换为另一个版本。**
+
+通常带上`-c`选项给出文件的比较结果。
+```shell
+(base) ➜  playground cat file1.txt
+a
+b
+c
+d
+(base) ➜  playground cat file2.txt
+b
+c
+d
+e
+(base) ➜  playground diff file1.txt file2.txt
+1d0   # 删除第一个文件中位置1处的文本行，这些文本行将会出现在第二个文件中位置0处
+< a
+4a4   # 把第二个文件中位置4处的文件行添加到第一个文件中的4处
+> e 
+(base) ➜  playground diff -c file1.txt file2.txt
+*** file1.txt	Thu Jan 28 22:42:47 2021
+--- file2.txt	Thu Jan 28 22:43:08 2021
+***************
+*** 1,4 ****
+- a
+  b
+  c
+  d
+--- 1,4 ----
+  b
+  c
+  d
++ e
+```
+
+19、使用`patch`将更改应用到文本文件中：它接受从`diff`程序的输出，并且通常被用来把较老的文件版本转变为较新的文件版本。以对linux内核代码的贡献为例，每个修改者只需提交一个包含了先前的内核版本与带有贡献者修改的新版本之间的差异的diff文件，接收者再使用`patch`将这些更改应用到他自己的源码树中即可。
+
+通过`diff -Naur file1.txt file2.txt > patchfile.txt`紧接着`patch < patchfile.txt`将补丁应用到`file1.txt`上。
+
+20、运行时编辑
