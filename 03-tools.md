@@ -436,9 +436,138 @@ rsync -av -delete rsync://rsync.gtlib.gatech.edu/fedora-linux-core/development/i
 ### 正则表达式
 8、正则表达式是一种符号表示法，被用来识别文本模式。在某种程度上，它们与匹配文件和路径名的 shell 通配符比较相似，但其规模更庞大。许多命令行工具和大多数的编程语言都支持正则表达式，以此来帮助解决文本操作问题。然而，并不是所有的正则表达式都是一样的，这就进一步混淆了事情；不同工具以及不同语言之间的正则表达式都略有差异。我们将会限定 POSIX 标准中描述的正则表达式（其包括了大多数的命令行工具）。
 
-9、和正则表达式打交道的程序是`grep`（global regular expression print），本质上，grep 程序会在其输入中查找一个指定的正则表达式，并输出匹配行。
+9、和正则表达式打交道的程序是`grep`（global regular expression print），本质上，`grep`程序会在其输入中查找一个指定的正则表达式，并输出匹配行。
 
 （1）`grep`的一般使用形式是：`grep [options] regex [file ...]`。
+常用的options有：
+选项 | 描述
+--- | ---
+`-i` | 忽略大小写。不会区分大小写字符。也可用`--ignore-case`来指定。
+`-v` | 不匹配。通常，`grep`程序会打印包含匹配项的文本行。这个选项导致`grep`程序只会打印不包含匹配项的文本行。也可用`--invert-match`来指定。
+`-c` | 打印匹配的数量（或者是不匹配的数目，若指定了`-v`选项），而不是文本行本身。 也可用`--count`选项来指定。
+`-l` | 打印包含匹配项的文件名，而不是文本行本身，也可用`--files-with-matches`选项来指定。
+`-L` | 相似于`-l`选项，但是只是打印不包含匹配项的文件名。也可用`--files-without-match`来指定。
+`-n` | 在每个匹配行之前打印出其位于文件中的相应行号。也可用`--line-number`选项来指定。
+`-h` | 应用于多文件搜索，不输出文件名。也可用`--no-filename`选项来指定。
+
+之前给出的例子`regex`基本上是直接根据**原义字符**给出的正则表达式，如`grep bzip some-file-path`等。
+
+（2）正则表达式除了包含原义字符，还包含元字符，其被用来指定更复杂的匹配项。元字符由以下字符组成：
+```
+^ $ . [ ] { } - ? * + ( ) | \
+```
+当在`regex`中使用元字符时，需要用引号以防止被shell展开。下面给出了一个简单的示例：
+```shell
+(base) ➜  playground grep -h '.zip' dirlist*
+bunzip2
+bzip2
+bzip2recover
+```
+其中`.`匹配任意字符（可理解为占位）。
+
+（3）使用锚点：在正则表达式中，插入符号和美元符号被看作是锚点。这意味着正则表达式只有在文本行的**开头**或**末尾**被找到时，才算发生一次匹配。示例：
+- `grep '^zip' dirlist*`（以`zip`开头的任意文本行）
+- `grep 'zip$' dirlist*`（以`zip`结尾的任意文本行）
+- `grep '^..j.r$' /usr/share/dict/words`（在字典里查找长度为5、第三个字符为`j`、最后一个字符为`r`的单词）
+
+（4）使用中括号表达式从一个指定的字符集合中匹配**单个**字符。示例：
+```shell
+(base) ➜  playground grep '[bg]zip' dirlist-*
+dirlist-usr-bin.txt:bzip2
+dirlist-usr-bin.txt:bzip2recover
+dirlist-usr-bin.txt:gzip
+```
+注意，元字符被放置到中括号里面后会失去了它们的特殊含义，除了以下两个：
+- 插入字符`^`：用来表示否定；
+- 连字符`-`：用来表示一个字符范围。
+```shell
+(base) ➜  playground grep '[^bg]zip' dirlist-*
+dirlist-usr-bin.txt:bunzip2
+dirlist-usr-bin.txt:funzip
+dirlist-usr-bin.txt:gunzip
+dirlist-usr-bin.txt:unzip
+dirlist-usr-bin.txt:unzipsfx
+(base) ➜  playground grep '[b-g]zip' dirlist-*
+dirlist-usr-bin.txt:bzip2
+dirlist-usr-bin.txt:bzip2recover
+dirlist-usr-bin.txt:gzip
+```
+`grep -h '^[A-Za-z0-9]' dirlist*.txt`匹配所有以字母或数字开头的文本行，`grep -h '[-AZ]' dirlist-*`则匹配包含`-`或`A`或`Z`的文本行。
+
+（5）以上给出了用`[]`和`-`所表示的、传统的字符区域的表示方法。更好的方法是使用POSIX字符集。我们已在[《学习shell》](https://github.com/hliangzhao/learn-ctl/blob/main/01-learn-shell.md)关于“字符展开”的章节谈到过它的使用，它同样可用于正则表达式。下面给出的是用于字符展开的例子：
+```shell
+(base) ➜  playground ls /usr/sbin/[[:upper:]]*
+/usr/sbin/AppleFileServer       /usr/sbin/DirectoryService      /usr/sbin/WirelessRadioManagerd
+/usr/sbin/BootCacheControl      /usr/sbin/KernelEventAgent
+/usr/sbin/DevToolsSecurity      /usr/sbin/PasswordService
+```
+所谓的POSIX即portable os interface，是unix世界“巴尔干化”后由IEEE组织并制定的一套通用标准（IEEE 1003），覆盖了应用程序编程接口（APIs），shell和一些实用程序等内容。
+
+常用的POSIX字符集如下：
+字符集 | 说明
+--- | ---
+`[:alnum:]` | 字母数字字符。在 ASCII 中，等价于：`A-Za-z0-9`
+`[:word:]` | 与`[:alnum:]`相同, 但增加了下划线字符。
+`[:alpha:]` | 字母字符。在 ASCII 中，等价于：`A-Za-z`
+`[:blank:]` | 包含空格和 tab 字符。
+`[:cntrl:]` | ASCII 的控制码。包含了0到31，和127的 ASCII 字符。
+`[:digit:]` | 数字0到9
+`[:graph:]` | 可视字符。在 ASCII 中，它包含33到126的字符。
+`[:lower:]` | 小写字母。
+`[:punct:]` | 标点符号字符。在 ASCII 中，等价`-!"#$%&'()*+,./:;<=>?@[\\\]_`{|}~`
+`[:print:]` | 可打印的字符。在[:graph:]中的所有字符，再加上空格字符。
+`[:space:]` | 空白字符，包括空格、tab、回车、换行、vertical tab 和 form feed。在 ASCII 中， 等价于：` \t\r\n\v\f`
+`[:upper:]` | 大写字母。
+`[:xdigit:]` | 用来表示十六进制数字的字符。在 ASCII 中，等价于`0-9A-Fa-f`
+<br>
+
+使用POSIX字符集的时候，要在外面在包含一层`[]`，否则仍旧被按照普通的字符区域处理。
+
+（6）POSIX把正则表达式的实现分成了两类：基本正则表达式（BRE）和扩展的正则表达式（ERE）。后者比前者（仅包含`^ $ . [ ] *`）拥有更多的元字符，并且用反斜杠转义后成为原义字符（前者与之正好相反）。`egrep`和`grep -e`均可处理ERE。接下来给出ERE的常用匹配策略。
+
+【1】交替：`|`<br>
+```shell
+(base) ➜  playground echo "ABC" | grep -E 'AAA|B|CC'
+ABC
+```
+上面的例子中，将字符串`ABC`通过管道作为`grep`带匹配的目标，模式则是`ABC`或`B`或`CC`中间的任意一个。
+模式需带上引号以防止被shell理解为管道（展开）。
+
+用元字符`()`将模式视为一个整体（可理解为优先级调整）。下面有个例子：
+- `grep -Eh '^(bz|gz|zip)' dirlist*.txt`：匹配以`bz`或`gz`或`zip`开头的文本行；
+- `grep -Eh '^bz|gz|zip' dirlist*.txt`：匹配以`bz`开头或包含`gz`，或包含`zip`的文本行。
+
+
+
+【2】限定符`?`：匹配零个或1个元素。即位于`?`前面的字符可有可无。
+```shell
+(base) ➜  playground echo "(025) 8888-2010" | grep -E '^\(?[[:digit:]][[:digit:]][[:digit:]]\)?'
+(025) 8888-2010       # 匹配(025)
+(base) ➜  playground echo "025 8888-2010" | grep -E '^\(?[[:digit:]][[:digit:]][[:digit:]]\)?'
+025 8888-2010         # 匹配025
+```
+在ERE中，`(`和`)`是元字符，因此需要使用`\`转义为原义字符。**注意区分正则表达式中的`?`和通配符匹配中的`?`。前者中，`?`前的字符零个或1个；后者中，`?`所占的位置有一个字符**。
+
+【3】限定符`*`：匹配零个或多个元素。下面这个例子`[[:upper:]][[:upper:][:lower:] ]*.`匹配一个如下的字符串：“开始于一个大写字母，然后包含任意多个大写和小写的字母和空格，最后以句号收尾”。（分析：`*`指定的仍然是前面的一个字符的个数。这个例子可被理解为`[chars]*`，而`[chars]`代表的正式单个「来自`chars`的」字符）
+
+【4】限定符`+`：匹配一个或多个元素。下面这个例子`^([[:alpha:]]+ ?)+$`匹配一个由“一个或多个字母字符”组构成的字符串，且要求字母字符之间由单个空格分开。（分析：`[[:alpha:]]+`和上文的`[chars]*`一样，单个字符出现至少一次。` ?`则要求` `至多出现1次。那么，如何表达`[[:alpha:]] ?`组成的模式整体至少出现一次呢？不能用`[]`，因为这匹配`[[:alpha:]] ?`中的单个字符，因此顺理成章地用`()`。）
+
+
+**同样地，注意区分正则表达式中的`*`和通配符匹配中的`*`。**
+
+【5】`{}`：匹配指定数目的、位于`{}`前面的字符。
+限定符 | 意思
+--- | ---
+`{n}` | 匹配前面的元素，如果它确切地出现了 n 次。
+`{n,m}` | 匹配前面的元素，如果它至少出现了n 次，但是不多于 m 次。
+`{n,}` | 匹配前面的元素，如果它至少出现了n 次。
+`{,m}` | 匹配前面的元素，如果它出现的次数不多于 m 次。
+
+使用`{}`可以简化模式。例如`echo "(555) 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$`可以让我们不至于将`[0-9]`抄写11遍。
+
+【6】`find`命令支持基于正则表达式的测试。命令`find . -regex '.*[^-\_./0-9a-zA-Z].*'`会在当前目录及其子目录中发现包含空格和其它潜在不规范字符的路径名。
+
+【7】一个常用的技巧：`less`和`vim`两者享有相同的文本查找方法——**按下`/`按键，然后输入正则表达式，来执行搜索任务。**
 
 ### 文本处理
 10、下面处理文本常用的工具，需要熟练并灵活使用它们：
@@ -660,4 +789,26 @@ e
 
 通过`diff -Naur file1.txt file2.txt > patchfile.txt`紧接着`patch < patchfile.txt`将补丁应用到`file1.txt`上。
 
-20、运行时编辑
+20、运行时编辑<br>
+（1）`tr`：操作标准输入，并把结果输出到标准输出。是一种基于字符的查找和替换。`tr`命令接受两个参数：要被转换的**字符集**以及相对应的转换后的字符集。字符集的表达方式：
+- 一个枚举列表。例如，`ABCDEFGHIJKLMNOPQRSTUVWXYZ`；
+- 一个字符域。例如，`A-Z`。注意这种方法有时候面临与其它命令相同的问题，归因于语系的排序规则，因此应该谨慎使用；
+- `POSIX`字符类。例如，[:upper:]。**此时须加上引号（macOS）**。
+
+一些典型用法：
+```shell
+(base) ➜  playground echo "lowercase letters" | tr a-z A-Z   # 枚举列表的方式
+LOWERCASE LETTERS
+(base) ➜  playground echo "secret text" | tr a-zA-Z n-za-mN-ZA-M    # ROT13文本编码（每个字符向前移动13位）
+frperg grkg
+(base) ➜  playground echo "frperg grkg" | tr a-zA-Z n-za-mN-ZA-M
+secret text
+(base) ➜  playground echo "lowercase letters" | tr "[:lower:]" A   # 字符类
+AAAAAAAAA AAAAAAA
+(base) ➜  playground echo "lowercase letters" | tr '[:lower:]' A
+AAAAAAAAA AAAAAAA
+(base) ➜  playground echo "aaabbbccc" | tr -s ab     # 删除重复的、枚举列表中的字符a和b
+abccc
+```
+
+（2）`sed`：对一系列指定的文件或标准输入进行复杂的编辑。查阅`man sed`了解其使用细节。
