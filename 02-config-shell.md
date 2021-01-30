@@ -17,8 +17,8 @@ xterm-256color
 
 4、当我们登录系统后，bash程序启动，并且会读取一系列称为启动文件的配置脚本，这些文件定义了默认的可供所有用户共享的shell环境。然后是读取更多位于我们自己家目录中的启动文件，这些启动文件定义了用户个人的shell环境。确切的启动顺序依赖于要运行的shell会话（session）类型。有两种shell会话类型：
 
-- 登录shell会话：启动一个虚拟控制台会话（先启动全局的`/etc/profile`，再启动`~/.bash_profile` ➜ `~/.bash_login` ➜ `~/.profile`）。
-- 非登录shell会话：在某GUI程序内启动终端会话（先启动全局的`/etc/bashrc`，再启动`~/.zshrc`）。除了读取以上启动文件之外，非登录shell会话也会继承它们父进程的环境设置，通常是一个登录shell（在`~/.zshrc`中有`source ~/.bash_profile`的命令）。
+- login shell session：启动一个虚拟控制台会话（先启动全局的`/etc/profile`，再启动`~/.bash_profile` ➜ `~/.bash_login` ➜ `~/.profile`）。
+- non-login shell session：在某GUI程序内启动终端会话（先启动全局的`/etc/bashrc`，再启动`~/.zshrc`）。除了读取以上启动文件之外，非登录shell会话也会继承它们父进程的环境设置，通常是一个登录shell（在`~/.zshrc`中有`source ~/.bash_profile`的命令）。
 
 5、对于我们输入的任意命令，shell会从一个列表中查询该命令是否存在，这个列表包含在`PATH`变量中。通过代码`PATH=$PATH:cmd-path`将路径位于`cmd-path`的命令添加到`PATH`变量中。这个代码风格是“追加赋值”。`cmd-path`当然也可以允许出现可展开的变量，例如`PATH=$PATH:$HOME/bin`将位于用户家目录中的`bin`目录添加到命令搜索范围内。
 
