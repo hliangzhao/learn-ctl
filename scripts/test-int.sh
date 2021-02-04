@@ -18,7 +18,7 @@ fi
 
 # use [[ ]] to perform "str =~ regex"
 INT_VAR2=10x
-if [[ "$INT_VAR2" =~ '^-?[0-9]+$' ]]; then   # for the regex, '' and "" are not required
+if [[ "$INT_VAR2" =~ '^-?[0-9]+$' ]]; then  # for the regexi ^-?[0-9]+$, '' and "" are not required
 	echo "$INT_VAR2 is an integer."
 else
 	echo "$INT_VAR2 is not an integer."

@@ -1,7 +1,7 @@
 #!/bin/zsh
 # test.sh: evaluate the status of file
-FILE=~/.bash_profile
-if [ -e "$FILE" ]; then       # " " is not necessary, butr can be used to avoid empty param
+# FILE=~/.bash_profile
+if [ -e $FILE ]; then       # " " is not necessary, but can be used to avoid empty param
 	if [ -f "$FILE" ]; then
 		echo "$FILE is a regular file."
 	fi
