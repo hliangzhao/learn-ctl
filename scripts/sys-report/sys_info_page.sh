@@ -32,6 +32,32 @@ report_home_space() {
 	fi
 }
 
+report_home_space2() {
+	local format="%8s%10s%10s\n"
+	local i dir_ls total_files total_dirs total_size username
+	if [[ $(id -u) -eq 0 ]]; then
+		dir_ls=/Users/*
+		username="all users"
+	else
+		dir_ls=/Users/$USER/*
+		username=$USER
+	fi
+	# dir_ls=../  (too big too slow)
+	echo "<h2>Home Space for $username</h2>"
+	for i in $dir_ls; do
+		total_files=$(find $i -type f | wc -l)
+		total_dirs=$(find $i -type d | wc -l)
+		total_size=$(du -sh $i | cut -f 1)
+		echo "<h3>$i</h3>"
+		echo "<pre>"
+		printf "$format" "Dirs" "Files" "Size"
+		printf "$format" "----" "----" "----"
+		printf "$format" $total_dirs $total_files $total_size
+		echo "</pre>"
+	done
+	return
+}
+
 usage() {
 	echo "$PROGNAME: usage: $PROGNAME [-f file | -i]"
 	return
@@ -48,7 +74,7 @@ write_html_page() {
         	<p>$TIME_STAMP</p>
         	$(report_uptime)
         	$(report_disk_usage)
-        	$(report_home_space)
+        	$(report_home_space2)
     	</body>
 	</html>
 	_EOF_
