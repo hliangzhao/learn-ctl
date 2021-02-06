@@ -1,0 +1,69 @@
+total 360
+-rw-r--r--  1 hliangzhao  staff    0 Feb  4 12:06 1.1
+-rw-r--r--  1 hliangzhao  staff    0 Feb  4 12:06 2
+drwxr-xr-x@ 2 hliangzhao  staff   64 Feb  5 14:43 3
+drwxr-xr-x@ 2 hliangzhao  staff   64 Feb  5 14:43 3.1
+-rwxr-xr-x  1 hliangzhao  staff  216 Feb  5 17:12 arith-loop.sh
+-rwxr-xr-x  1 hliangzhao  staff  220 Feb  5 19:21 arr-sort.sh
+-rwxr-xr-x  1 hliangzhao  staff  176 Feb  3 22:43 assign-multi-vars.sh
+-rwxr-xr-x@ 1 hliangzhao  staff  234 Feb  4 11:15 assign.sh
+-rwxr-xr-x  1 hliangzhao  staff  407 Feb  4 16:51 case-input.sh
+-rwxr-xr-x  1 hliangzhao  staff  569 Feb  4 16:40 case-menu.sh
+-rw-r--r--  1 hliangzhao  staff  342 Feb  4 15:18 distros.txt
+-rwxr-xr-x  1 hliangzhao  staff  349 Feb  4 21:16 file-info-func.sh
+-rwxr-xr-x  1 hliangzhao  staff  189 Feb  4 17:44 file-info.sh
+-rw-r--r--  1 hliangzhao  staff    7 Feb  5 17:27 foo.bc
+-rwxr-xr-x  1 hliangzhao  staff   79 Feb  5 15:14 for-loop.sh
+-rwxr-xr-x@ 1 hliangzhao  staff  255 Feb  3 15:35 func.sh
+-rwxr-xr-x  1 hliangzhao  staff  227 Feb  5 16:55 highlight-modulo.sh
+-rwxr-xr-x  1 hliangzhao  staff  594 Feb  5 19:09 hours.sh
+-rwxr-xr-x@ 1 hliangzhao  staff  141 Feb  4 11:19 if-else.sh
+-rwxr-xr-x  1 hliangzhao  staff  651 Feb  5 18:17 loan-calc.sh
+-rwxr-xr-x  1 hliangzhao  staff  192 Feb  4 11:20 local-var.sh
+-rwxr-xr-x  1 hliangzhao  staff  350 Feb  5 14:51 longest-word.sh
+-rwxr-xr-x  1 hliangzhao  staff  383 Feb  5 16:18 longest-word2.sh
+-rw-r--r--  1 hliangzhao  staff    0 Feb  6 12:40 output.txt
+-rwxr-xr-x@ 1 hliangzhao  staff  539 Feb  4 21:45 param-expansion.sh
+-rwxr-xr-x  1 hliangzhao  staff  182 Feb  4 17:25 posit-param.sh
+-rwxr-xr-x  1 hliangzhao  staff  137 Feb  4 17:28 posit-param2.sh
+-rwxr-xr-x  1 hliangzhao  staff  463 Feb  4 11:41 read-ifs.sh
+-rwxr-xr-x  1 hliangzhao  staff  531 Feb  4 11:21 read-int.sh
+-rwxr-xr-x  1 hliangzhao  staff  705 Feb  4 12:15 read-menu.sh
+-rwxr-xr-x  1 hliangzhao  staff  238 Feb  4 11:22 read-secret.sh
+-rwxr-xr-x  1 hliangzhao  staff  941 Feb  4 12:07 read-validate.sh
+-rw-r--r--  1 hliangzhao  staff  160 Feb  4 15:10 root-file
+drwxr-xr-x@ 4 hliangzhao  staff  128 Feb  5 17:11 sys-report
+-rwxr-xr-x  1 hliangzhao  staff  541 Feb  4 17:12 test-case1.sh
+-rwxr-xr-x  1 hliangzhao  staff  652 Feb  4 21:59 test-case2.sh
+-rwxr-xr-x  1 hliangzhao  staff   40 Feb  5 15:44 test-expansion.sh
+-rwxr-xr-x  1 hliangzhao  staff  950 Feb  4 11:23 test-file.sh
+-rwxr-xr-x  1 hliangzhao  staff  676 Feb  4 11:27 test-int.sh
+-rwxr-xr-x  1 hliangzhao  staff  509 Feb  3 16:33 test-int2.sh
+-rwxr-xr-x  1 hliangzhao  staff  407 Feb  3 16:43 test-int3.sh
+-rwxr-xr-x  1 hliangzhao  staff  363 Feb  3 15:58 test-string.sh
+-rwxr-xr-x  1 hliangzhao  staff  222 Feb  4 15:30 troube.sh
+-rwxr-xr-x  1 hliangzhao  staff  271 Feb  5 16:46 ul-declare.sh
+-rwxr-xr-x  1 hliangzhao  staff  213 Feb  5 16:49 ul-param.sh
+-rwxr-xr-x  1 hliangzhao  staff  133 Feb  4 15:05 util-count.sh
+-rwxr-xr-x@ 1 hliangzhao  staff  144 Feb  4 12:28 while-count.sh
+-rwxr-xr-x  1 hliangzhao  staff  782 Feb  4 14:54 while-menu.sh
+-rwxr-xr-x  1 hliangzhao  staff  809 Feb  4 15:01 while-menu2.sh
+-rwxr-xr-x  1 hliangzhao  staff  238 Feb  4 15:12 while-read.sh
+-rwxr-xr-x  1 hliangzhao  staff  208 Feb  4 15:17 while-read2.sh
+Listing of distros.txt
+SUSE	10.2	12/07/2006
+Fedora	10	11/25/2008
+SUSE	11.0	06/18/2008
+Ubuntu	8.04	04/24/2008
+Fedora	8	11/08/2007
+SUSE	10.3	10/04/2007
+Ubuntu	6.10	10/26/2006
+Fedora	7	05/31/2007
+Ubuntu	7.10	10/18/2007
+Ubuntu	7.04	04/19/2007
+SUSE	10.1	05/11/2006
+Fedora	6	10/24/2006
+Fedora	9	5/13/2008
+Ubuntu	6.06	06/01/2006
+Ubuntu	8.10	10/30/2008
+Fedora	5	03/20/2006
