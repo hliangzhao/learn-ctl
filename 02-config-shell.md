@@ -12,7 +12,8 @@ less
 (base) ➜  playground printenv TERM
 xterm-256color
 ```
-`exprt`是shell的保留字，用于新增，修改或删除环境变量，供后续执行的程序使用。`export`尽在档当前话内有效。其语法如下：
+`exprt`是shell的保留字，用于新增、修改或删除环境变量，供后续执行的程序使用。
+**`export`仅在当前话内有效。**其语法如下：
 ```shell
 export [-fnp] [变量名称]=[变量设置值]
 ```
@@ -51,8 +52,8 @@ md='mkdir -p'
 
 4、当我们登录系统后，bash程序启动，并且会读取一系列称为启动文件的配置脚本（位于`/etc/`），这些文件定义了默认的可供所有用户共享的shell环境。然后是读取更多位于我们自己家目录中的启动文件，这些启动文件定义了用户个人的shell环境。确切的启动顺序依赖于要运行的shell会话（session）类型。有两种shell会话类型：
 
-- login shell session：启动一个虚拟控制台会话（先启动全局的`/etc/profile`，再启动`~/.bash_profile` ➜ `~/.bash_login` ➜ `~/.profile`）。
-- non-login shell session：在某GUI程序内启动终端会话（先启动全局的`/etc/bashrc`，再启动`~/.zshrc`）。除了读取以上启动文件之外，非登录shell会话也会继承它们父进程的环境设置，通常是一个登录shell（例如，在`~/.zshrc`中有`source ~/.bash_profile`的命令）。
+- **login shell session**：启动一个虚拟控制台会话（先启动全局的`/etc/profile`，再启动`~/.bash_profile` ➜ `~/.bash_login` ➜ `~/.profile`）。
+- **non-login shell session**：在某GUI程序内启动终端会话（先启动全局的`/etc/bashrc`，再启动`~/.zshrc`）。除了读取以上启动文件之外，非登录shell会话也会继承它们父进程的环境设置，通常是一个登录shell（例如，在`~/.zshrc`中有`source ~/.bash_profile`的命令）。
 
 登录式shell是用户使用自己的user ID登录**交互式shell**的第一个进程。其中，
 * **交互式shell**指的是在终端有交互的模式，即用户输入命令，并在回车后立即执行的shell；
