@@ -1,6 +1,14 @@
 ## 类Unix系统命令行速查清单
 （本文档所述内容总结自[TLCL](http://billie66.github.io/TLCL/)，测试环境为macOS 10.15 & zsh 5.7）
 
+TODO:
+
+1、完善[**《编写shell脚本》**](https://github.com/hliangzhao/learn-ctl/blob/main/04-write-shell-scripts.md)：最后三个章节的内容再过一遍、整体再梳理一遍。
+
+2、前三章的内容反复练习。
+
+3、`./scripts/`中的脚本文件重新理解并重写关键部分。
+
 **本清单包含如下内容**：
 
 [**一、学习shell**](https://github.com/hliangzhao/learn-ctl/blob/main/01-learn-shell.md)
