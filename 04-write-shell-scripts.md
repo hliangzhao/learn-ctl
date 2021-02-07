@@ -132,6 +132,7 @@ exit
 `file1 -ot file2` | file1早于 file2。
 `-b file` | file 存在并且是一个块（设备）文件。
 ... | ...
+
 完整列表通过`man test`查阅。
 
 **用于测试字符串的`test`表达式：**
@@ -140,7 +141,7 @@ exit
 `string` | string 不为 null。
 `-z string` | 字符串 string 的长度为零。
 `-n string` | 字符串 string 的长度大于零。
-`string1 = string2`或`string1 == string2` | string1 和 string2 相同。 单或双等号都可以，不过双等号更受欢迎。
+`string1 = string2`或`string1 == string2` | string1 和 string2 相同。双等号更受欢迎。
 ... | ...
 
 此外还有用于测试整数的，不再赘述。
@@ -283,4 +284,67 @@ for (( expression1; expression2; expression3 )); do
 done
 ```
 
-ch33、ch35~ch37的内容尚未整理。
+11、使用位置参数
+
+（1）执行shell脚本时连带键入的参数被称为未知参数，用`$i`获取。其中`$0`是脚本（命令）名，`$i`获取第i个未知参数。用`$#`获取全部位置参数的个数（从1开始算起）。
+
+（2）使用`shift`将所有的位置参数“向下移动一个位置”，从而只需通过`$1`即可依次处理每一个位置参数。
+
+（3）使用`basename`命令清除一个路径名的开头部分，只留下一个文件的基本名称。
+
+（4）把所有的位置参数作为一个集体来管理。下面的例子中，将`$*`和`$@`作为下一级命令print_params的参数传递给print_params。`$*`和`$@`本身得到的是`"word" "words with spaces"`。毒刺它们有略微不同的处理方式：
+
+参数|描述
+---|---
+`$*`|展开成一个从1开始的位置参数列表。当它被用双引号引起来的时候，展开成一个由双引号引起来 的字符串，包含了所有的位置参数，每个位置参数由 shell 变量 IFS 的第一个字符（默认为一个空格）分隔开。
+`$@`|展开成一个从1开始的位置参数列表。当它被用双引号引起来的时候， 它把每一个位置参数展开成一个由双引号引起来的分开的字符串。
+
+```shell
+#!/bin/bash
+# posit-params3 : script to demonstrate $* and $@
+print_params () {
+    echo "\$1 = $1"
+    echo "\$2 = $2"
+    echo "\$3 = $3"
+    echo "\$4 = $4"
+}
+pass_params () {
+    echo -e "\n" '$* :';      print_params   $*
+    echo -e "\n" '"$*" :';    print_params   "$*"
+    echo -e "\n" '$@ :';      print_params   $@
+    echo -e "\n" '"$@" :';    print_params   "$@"
+}
+pass_params "word" "words with spaces"
+```
+
+12、参数展开的详细描述，包括
+- 基本的参数展开：`$a`、`${a}`
+- 管理空变量的展开：`${parameter:-word}`、`${parameter:=word}`、`${parameter:?word}`、`${parameter:+word}`
+- 返回变量名的参数展开：`${!prefix*}`、`${!prefix@}`
+- 字符串展开：`${#parameter}`返回字符串长度、用于数组则返回数组元素个数、`{parameter:offset:length`提取部分字符（`length`不是必须的）、`${parameter#pattern}`或`${parameter##pattern}`从paramter所包含的字符串中清除开头一部分文本（将`#`换成`%`则从字符串末尾开始清除）、`${parameter/pattern/string}`及其变种进行查找替换操作
+- 使用`declare`命令可以用来把字符串规范成大写或小写字符（`declare -u upper`及`declare -l lower`）
+- 算术求值与展开：简单运算、设定基底、位运算符及逻辑运算符、赋值操作、使用`bc`实现复杂运算
+
+涉及管理空变量的展开、返回变量名的展开、字符串展开、大小写转换等，详见[《字符串和数字》](http://billie66.github.io/TLCL/book/chap35.html)。
+
+13、灵活使用数组，包括
+- 数组的创建、赋值、访问
+- 输出整个数组的内容（使用`${arrname[*]}`或``${arrname[@]}``）
+- 确定数组元素的个数（使用`${#arrname[*]}`）
+- 找到数组使用的下标（使用`${!arrname[*]}`或``${!arrname[@]}``）
+- 使用`+=`在数组末尾添加元素
+- 使用`sort`对数组进行排序（`a_sorted=($(for i in "${a[@]}"; do echo $i; done | sort))`）
+- 使用`unset`删除数组或数组元素
+- 使用关联数组（键值对）
+
+详见[《数组》](http://billie66.github.io/TLCL/book/chap36.html)。
+
+14、一些不曾涉及的知识，包括
+- 组命令和子shell
+- 进程替换
+- 使用`trap`捕捉信号并作出响应
+- 创建不可预测文件名的临时文件（`mktemp`）
+- 异步执行
+- 命名管道
+
+详见[《奇珍异宝》](http://billie66.github.io/TLCL/book/chap37.html)。
